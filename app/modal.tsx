@@ -1,13 +1,11 @@
-import { StatusBar } from 'expo-status-bar';
-import { Platform } from 'react-native';
-
 import { ScreenContent } from '~/components/ScreenContent';
-
+import { Link, router} from 'expo-router';
 export default function Modal() {
+  const isPresented = router.canGoBack();
   return (
     <>
       <ScreenContent path="app/modal.tsx" title="Modal" />
-      <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
+      {!isPresented && <Link href="../">Back Home</Link>}
     </>
   );
 }
