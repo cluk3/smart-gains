@@ -1,5 +1,6 @@
+import { Link, router } from 'expo-router';
+
 import { ScreenContent } from '~/components/ScreenContent';
-import { Link, router} from 'expo-router';
 export default function Modal() {
   const isPresented = router.canGoBack();
   return (

@@ -11,6 +11,7 @@ import Animated, {
   useDerivedValue,
   withTiming,
 } from 'react-native-reanimated';
+
 import { ChevronDown } from '~/lib/icons/ChevronDown';
 import { cn } from '~/lib/utils';
 
@@ -20,9 +21,8 @@ const NavigationMenu = React.forwardRef<
 >(({ className, children, ...props }, ref) => (
   <NavigationMenuPrimitive.Root
     ref={ref}
-    className={cn('relative z-10 flex flex-row max-w-max items-center justify-center', className)}
-    {...props}
-  >
+    className={cn('relative z-10 flex max-w-max flex-row items-center justify-center', className)}
+    {...props}>
     {children}
     {Platform.OS === 'web' && <NavigationMenuViewport />}
   </NavigationMenuPrimitive.Root>
@@ -36,7 +36,7 @@ const NavigationMenuList = React.forwardRef<
   <NavigationMenuPrimitive.List
     ref={ref}
     className={cn(
-      'web:group flex flex-1 flex-row web:list-none items-center justify-center gap-1',
+      'web:group flex flex-1 flex-row items-center justify-center gap-1 web:list-none',
       className
     )}
     {...props}
@@ -74,14 +74,13 @@ const NavigationMenuTrigger = React.forwardRef<
         value === itemValue && 'bg-accent',
         className
       )}
-      {...props}
-    >
+      {...props}>
       <>{children}</>
       <Animated.View style={chevronStyle}>
         <ChevronDown
           size={12}
-          className={cn('relative text-foreground h-3 w-3 web:transition web:duration-200')}
-          aria-hidden={true}
+          className={cn('relative h-3 w-3 text-foreground web:transition web:duration-200')}
+          aria-hidden
         />
       </Animated.View>
     </NavigationMenuPrimitive.Trigger>
@@ -102,18 +101,16 @@ const NavigationMenuContent = React.forwardRef<
       <NavigationMenuPrimitive.Content
         ref={ref}
         className={cn(
-          'w-full native:border native:border-border native:rounded-lg native:shadow-lg native:bg-popover native:text-popover-foreground native:overflow-hidden',
+          'native:border native:border-border native:rounded-lg native:shadow-lg native:bg-popover native:text-popover-foreground native:overflow-hidden w-full',
           value === itemValue
             ? 'web:animate-in web:fade-in web:slide-in-from-right-20'
             : 'web:animate-out web:fade-out web:slide-out-to-left-20',
           className
         )}
-        {...props}
-      >
+        {...props}>
         <Animated.View
           entering={Platform.OS !== 'web' ? FadeInLeft : undefined}
-          exiting={Platform.OS !== 'web' ? FadeOutLeft : undefined}
-        >
+          exiting={Platform.OS !== 'web' ? FadeOutLeft : undefined}>
           {children}
         </Animated.View>
       </NavigationMenuPrimitive.Content>
@@ -132,12 +129,11 @@ const NavigationMenuViewport = React.forwardRef<
     <View className={cn('absolute left-0 top-full flex justify-center')}>
       <View
         className={cn(
-          'web:origin-top-center relative mt-1.5 web:h-[var(--radix-navigation-menu-viewport-height)] w-full overflow-hidden rounded-md border border-border bg-popover text-popover-foreground shadow-lg web:animate-in web:zoom-in-90',
+          'web:origin-top-center relative mt-1.5 w-full overflow-hidden rounded-md border border-border bg-popover text-popover-foreground shadow-lg web:h-[var(--radix-navigation-menu-viewport-height)] web:animate-in web:zoom-in-90',
           className
         )}
         ref={ref}
-        {...props}
-      >
+        {...props}>
         <NavigationMenuPrimitive.Viewport />
       </View>
     </View>
@@ -160,9 +156,8 @@ const NavigationMenuIndicator = React.forwardRef<
         value === itemValue ? 'web:animate-in web:fade-in' : 'web:animate-out web:fade-out',
         className
       )}
-      {...props}
-    >
-      <View className='relative top-[60%] h-2 w-2 rotate-45 rounded-tl-sm bg-border shadow-md shadow-foreground/5' />
+      {...props}>
+      <View className="relative top-[60%] h-2 w-2 rotate-45 rounded-tl-sm bg-border shadow-md shadow-foreground/5" />
     </NavigationMenuPrimitive.Indicator>
   );
 });

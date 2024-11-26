@@ -9,12 +9,13 @@ import {
   View,
   type ViewStyle,
 } from 'react-native';
+
+import { TextClassContext } from '~/components/ui/text';
 import { Check } from '~/lib/icons/Check';
 import { ChevronDown } from '~/lib/icons/ChevronDown';
 import { ChevronRight } from '~/lib/icons/ChevronRight';
 import { ChevronUp } from '~/lib/icons/ChevronUp';
 import { cn } from '~/lib/utils';
-import { TextClassContext } from '~/components/ui/text';
 
 const ContextMenu = ContextMenuPrimitive.Root;
 const ContextMenuTrigger = ContextMenuPrimitive.Trigger;
@@ -35,20 +36,18 @@ const ContextMenuSubTrigger = React.forwardRef<
       value={cn(
         'select-none text-sm native:text-lg text-primary',
         open && 'native:text-accent-foreground'
-      )}
-    >
+      )}>
       <ContextMenuPrimitive.SubTrigger
         ref={ref}
         className={cn(
-          'flex flex-row web:cursor-default web:select-none items-center gap-2 web:focus:bg-accent active:bg-accent web:hover:bg-accent rounded-sm px-2 py-1.5 native:py-2 web:outline-none',
+          'native:py-2 flex flex-row items-center gap-2 rounded-sm px-2 py-1.5 active:bg-accent web:cursor-default web:select-none web:outline-none web:hover:bg-accent web:focus:bg-accent',
           open && 'bg-accent',
           inset && 'pl-8',
           className
         )}
-        {...props}
-      >
+        {...props}>
         <>{children}</>
-        <Icon size={18} className='ml-auto text-foreground' />
+        <Icon size={18} className="ml-auto text-foreground" />
       </ContextMenuPrimitive.SubTrigger>
     </TextClassContext.Provider>
   );
@@ -64,7 +63,7 @@ const ContextMenuSubContent = React.forwardRef<
     <ContextMenuPrimitive.SubContent
       ref={ref}
       className={cn(
-        'z-50 min-w-[8rem] overflow-hidden rounded-md border mt-1 border-border bg-popover p-1 shadow-md shadow-foreground/5 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2',
+        'z-50 mt-1 min-w-[8rem] overflow-hidden rounded-md border border-border bg-popover p-1 shadow-md shadow-foreground/5 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2',
         open
           ? 'web:animate-in web:fade-in-0 web:zoom-in-95'
           : 'web:animate-out web:fade-out-0 web:zoom-out ',
@@ -95,11 +94,10 @@ const ContextMenuContent = React.forwardRef<
                 overlayStyle,
               ] as ViewStyle)
             : Platform.OS !== 'web'
-            ? StyleSheet.absoluteFill
-            : undefined
+              ? StyleSheet.absoluteFill
+              : undefined
         }
-        className={overlayClassName}
-      >
+        className={overlayClassName}>
         <ContextMenuPrimitive.Content
           ref={ref}
           className={cn(
@@ -123,11 +121,11 @@ const ContextMenuItem = React.forwardRef<
     inset?: boolean;
   }
 >(({ className, inset, ...props }, ref) => (
-  <TextClassContext.Provider value='select-none text-sm native:text-lg text-popover-foreground web:group-focus:text-accent-foreground'>
+  <TextClassContext.Provider value="select-none text-sm native:text-lg text-popover-foreground web:group-focus:text-accent-foreground">
     <ContextMenuPrimitive.Item
       ref={ref}
       className={cn(
-        'relative flex flex-row web:cursor-default items-center gap-2 rounded-sm px-2 py-1.5 native:py-2 web:outline-none web:focus:bg-accent active:bg-accent web:hover:bg-accent group',
+        'native:py-2 group relative flex flex-row items-center gap-2 rounded-sm px-2 py-1.5 active:bg-accent web:cursor-default web:outline-none web:hover:bg-accent web:focus:bg-accent',
         inset && 'pl-8',
         props.disabled && 'opacity-50 web:pointer-events-none',
         className
@@ -145,15 +143,14 @@ const ContextMenuCheckboxItem = React.forwardRef<
   <ContextMenuPrimitive.CheckboxItem
     ref={ref}
     className={cn(
-      'relative flex flex-row web:cursor-default items-center web:group rounded-sm py-1.5 native:py-2 pl-8 pr-2 web:outline-none web:focus:bg-accent active:bg-accent',
-      props.disabled && 'web:pointer-events-none opacity-50',
+      'web:group native:py-2 relative flex flex-row items-center rounded-sm py-1.5 pl-8 pr-2 active:bg-accent web:cursor-default web:outline-none web:focus:bg-accent',
+      props.disabled && 'opacity-50 web:pointer-events-none',
       className
     )}
-    {...props}
-  >
-    <View className='absolute left-2 flex h-3.5 w-3.5 items-center justify-center'>
+    {...props}>
+    <View className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
       <ContextMenuPrimitive.ItemIndicator>
-        <Check size={14} strokeWidth={3} className='text-foreground' />
+        <Check size={14} strokeWidth={3} className="text-foreground" />
       </ContextMenuPrimitive.ItemIndicator>
     </View>
     <>{children}</>
@@ -168,15 +165,14 @@ const ContextMenuRadioItem = React.forwardRef<
   <ContextMenuPrimitive.RadioItem
     ref={ref}
     className={cn(
-      'relative flex flex-row web:cursor-default web:group items-center rounded-sm py-1.5 native:py-2 pl-8 pr-2 web:outline-none web:focus:bg-accent active:bg-accent',
-      props.disabled && 'web:pointer-events-none opacity-50',
+      'web:group native:py-2 relative flex flex-row items-center rounded-sm py-1.5 pl-8 pr-2 active:bg-accent web:cursor-default web:outline-none web:focus:bg-accent',
+      props.disabled && 'opacity-50 web:pointer-events-none',
       className
     )}
-    {...props}
-  >
-    <View className='absolute left-2 flex h-3.5 w-3.5 items-center justify-center'>
+    {...props}>
+    <View className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
       <ContextMenuPrimitive.ItemIndicator>
-        <View className='bg-foreground h-2 w-2 rounded-full' />
+        <View className="h-2 w-2 rounded-full bg-foreground" />
       </ContextMenuPrimitive.ItemIndicator>
     </View>
     <>{children}</>
@@ -193,7 +189,7 @@ const ContextMenuLabel = React.forwardRef<
   <ContextMenuPrimitive.Label
     ref={ref}
     className={cn(
-      'px-2 py-1.5 text-sm native:text-base font-semibold text-foreground web:cursor-default',
+      'native:text-base px-2 py-1.5 text-sm font-semibold text-foreground web:cursor-default',
       inset && 'pl-8',
       className
     )}
@@ -218,7 +214,7 @@ const ContextMenuShortcut = ({ className, ...props }: TextProps) => {
   return (
     <Text
       className={cn(
-        'ml-auto text-xs native:text-sm tracking-widest text-muted-foreground',
+        'native:text-sm ml-auto text-xs tracking-widest text-muted-foreground',
         className
       )}
       {...props}
