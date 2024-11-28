@@ -201,7 +201,7 @@
         "Continue alternating in this manner for the recommended amount of repetitions."
       ],
       "name": "Alternate Hammer Curl",
-      "primary_muscles": ["biceps", "brachialis"],
+      "primary_muscles": ["biceps"],
       "secondary_muscles": ["forearms"],
       "variation_on": ["curl"],
       "video": "https://www.youtube.com/watch?v=zC3nLlEvin4"
@@ -698,7 +698,7 @@
       ],
       "name": "Barbell Curl",
       "primary_muscles": ["biceps"],
-      "secondary_muscles": ["brachialis", "forearms"],
+      "secondary_muscles": ["forearms"],
       "variation_on": ["curl"],
       "video": "https://www.youtube.com/watch?v=LY1V6UbRHFM"
     },
@@ -1642,7 +1642,7 @@
         "Repeat for the recommended amount of repetitions."
       ],
       "name": "Cable Hammer Curls (Rope Attachment)",
-      "primary_muscles": ["biceps", "brachialis"],
+      "primary_muscles": ["biceps"],
       "secondary_muscles": ["forearms"],
       "variation_on": ["curl"],
       "video": "https://www.youtube.com/watch?v=1Quc_tOv97I"
@@ -2615,7 +2615,7 @@
         "Continue alternating in this fashion until the recommended amount of repetitions is performed for each arm."
       ],
       "name": "Cross Body Hammer Curl",
-      "primary_muscles": ["biceps", "brachialis"],
+      "primary_muscles": ["biceps"],
       "secondary_muscles": ["forearms"],
       "variation_on": ["curl"],
       "video": "https://www.youtube.com/watch?v=zC3nLlEvin4"
@@ -3204,7 +3204,7 @@
       ],
       "name": "Dumbbell Bicep Curl",
       "primary_muscles": ["biceps"],
-      "secondary_muscles": ["brachialis", "forearms"],
+      "secondary_muscles": ["forearms"],
       "variation_on": ["curl"],
       "video": "https://www.youtube.com/watch?v=ykJmrZ5v0Oo"
     },
@@ -3610,7 +3610,7 @@
       ],
       "name": "EZ-Bar Curl",
       "primary_muscles": ["biceps"],
-      "secondary_muscles": ["brachialis"],
+      "secondary_muscles": [],
       "variation_on": ["curl"],
       "video": "https://www.youtube.com/watch?v=zG2xJ0Q5QtI"
     },
@@ -4348,7 +4348,7 @@
         "Repeat for the recommended amount of repetitions."
       ],
       "name": "Hammer Curl",
-      "primary_muscles": ["biceps", "brachialis"],
+      "primary_muscles": ["biceps"],
       "secondary_muscles": ["forearms"],
       "variation_on": ["curl"],
       "video": "https://www.youtube.com/watch?v=zC3nLlEvin4"
@@ -4866,7 +4866,7 @@
         "Continue to the top of the movement and pause, then slowly return to the start position."
       ],
       "name": "Incline Hammer Curl",
-      "primary_muscles": ["biceps", "brachialis"],
+      "primary_muscles": ["biceps"],
       "secondary_muscles": ["forearms"],
       "variation_on": ["curl"],
       "video": "https://www.youtube.com/watch?v=zC3nLlEvin4"
@@ -11455,7 +11455,7 @@
         "Squeeze the biceps hard for a second at the contracted position and repeat for the recommended amount of repetitions."
       ],
       "name": "Dumbbell Preacher Curl",
-      "primary_muscles": ["biceps", "brachialis"],
+      "primary_muscles": ["biceps"],
       "secondary_muscles": ["forearms"],
       "variation_on": ["curl"],
       "video": "https://www.youtube.com/watch?v=DoCWeUBA0Gs"
@@ -12010,7 +12010,7 @@
         "Repeat for the recommended amount of repetitions."
       ],
       "name": "Zottman Curl",
-      "primary_muscles": ["biceps", "brachialis"],
+      "primary_muscles": ["biceps"],
       "secondary_muscles": ["forearms"],
       "variation_on": ["curl"],
       "video": "https://www.youtube.com/watch?v=ZrpRBgswtHs"
@@ -12028,7 +12028,7 @@
         "Repeat for the recommended amount of repetitions."
       ],
       "name": "Zottman Preacher Curl",
-      "primary_muscles": ["biceps", "brachialis"],
+      "primary_muscles": ["biceps"],
       "secondary_muscles": ["forearms"],
       "variation_on": ["curl"],
       "video": "https://www.youtube.com/watch?v=prfNS4YiAqU"
@@ -12242,7 +12242,7 @@
       "license_author": "wger.de",
       "name": "Hammercurls on Cable",
       "primary_muscles": ["biceps"],
-      "secondary_muscles": ["brachialis"],
+      "secondary_muscles": [],
       "variation_id": 16
     },
     {
@@ -12312,7 +12312,7 @@
       "license_author": "wger.de",
       "name": "Long-Pulley (low Row)",
       "primary_muscles": ["lats"],
-      "secondary_muscles": ["biceps", "brachialis"],
+      "secondary_muscles": ["biceps"],
       "variation_id": null
     },
     {
@@ -12326,7 +12326,7 @@
       "license_author": "wger.de",
       "name": "Long-Pulley, Narrow",
       "primary_muscles": ["lats"],
-      "secondary_muscles": ["biceps", "brachialis"],
+      "secondary_muscles": ["biceps"],
       "variation_id": null
     },
     {
@@ -12480,7 +12480,7 @@
       "license_author": "minifigmaster125",
       "name": "Pistol Squat",
       "primary_muscles": ["hamstrings", "glutes"],
-      "secondary_muscles": ["shoulders", "biceps", "brachialis"],
+      "secondary_muscles": ["shoulders", "biceps"],
       "variation_id": 12
     },
     {
@@ -12787,8 +12787,8 @@
       },
       "license_author": "cgoob883",
       "name": "Preacher Curls",
-      "primary_muscles": ["brachialis"],
-      "secondary_muscles": ["brachialis"],
+      "primary_muscles": ["biceps"],
+      "secondary_muscles": [],
       "variation_id": 16
     },
     {
@@ -13305,8 +13305,8 @@
       },
       "license_author": "http://www.exrx.net/WeightExercises/Brachialis/DBC",
       "name": "Dumbbell Concentration Curl",
-      "primary_muscles": ["brachialis"],
-      "secondary_muscles": ["biceps"],
+      "primary_muscles": ["biceps"],
+      "secondary_muscles": [],
       "variation_id": 16
     },
     {
@@ -13375,7 +13375,7 @@
       },
       "license_author": "GrosseHund",
       "name": "Hercules Pillars",
-      "primary_muscles": ["biceps", "brachialis", "triceps"],
+      "primary_muscles": ["biceps", "triceps"],
       "secondary_muscles": ["shoulders"],
       "variation_id": null
     },
@@ -13404,7 +13404,7 @@
       "license_author": "ExRx",
       "name": "Dumbbell Incline Curl",
       "primary_muscles": ["biceps"],
-      "secondary_muscles": ["brachialis"],
+      "secondary_muscles": [],
       "variation_id": 16
     },
     {
@@ -13473,7 +13473,7 @@
       },
       "license_author": "nate303303",
       "name": "Zottman Curl",
-      "primary_muscles": ["biceps", "brachialis"],
+      "primary_muscles": ["biceps"],
       "secondary_muscles": [],
       "variation_id": 16
     },
@@ -13922,7 +13922,7 @@
       "license_author": "sebk",
       "name": "Bentover Dumbbell Rows",
       "primary_muscles": ["lats"],
-      "secondary_muscles": ["biceps", "hamstrings", "brachialis"],
+      "secondary_muscles": ["biceps", "hamstrings"],
       "variation_id": 1
     },
     {
@@ -14035,7 +14035,6 @@
         "shoulders",
         "biceps",
         "hamstrings",
-        "brachialis",
         "calves",
         "glutes",
         "lats",
@@ -14043,7 +14042,6 @@
         "chest",
         "quads",
         "abs",
-
         "traps",
         "triceps"
       ],
@@ -14465,8 +14463,8 @@
       },
       "license_author": "BFad07",
       "name": "Standing Bicep Curl",
-      "primary_muscles": ["biceps", "brachialis"],
-      "secondary_muscles": ["brachialis"],
+      "primary_muscles": ["biceps"],
+      "secondary_muscles": [],
       "variation_id": 16
     },
     {
@@ -14479,7 +14477,7 @@
       },
       "license_author": "BFad07",
       "name": "Reverse Curl",
-      "primary_muscles": ["biceps", "brachialis"],
+      "primary_muscles": ["biceps"],
       "secondary_muscles": ["biceps"],
       "variation_id": null
     },
@@ -14536,7 +14534,7 @@
       "license_author": "BFad07",
       "name": "Pushups",
       "primary_muscles": ["shoulders", "chest", "triceps"],
-      "secondary_muscles": ["brachialis"],
+      "secondary_muscles": ["biceps"],
       "variation_id": 8
     },
     {
@@ -14581,7 +14579,6 @@
         "shoulders",
         "biceps",
         "hamstrings",
-        "brachialis",
         "calves",
         "glutes",
         "lats",

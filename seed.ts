@@ -1,5 +1,5 @@
 import { faker } from '@snaplet/copycat';
-import { createSeedClient } from '@snaplet/seed';
+import { createSeedClient, SeedClient } from '@snaplet/seed';
 
 import {
   EQUIPMENTS,
@@ -10,8 +10,25 @@ import {
   INTENSITY_TYPES,
   WEIGHT_UNITS,
 } from './const';
+// @ts-expect-error
+import file from './exercises.json' assert { type: 'json' };
+
+const userId = faker.string.uuid();
+const PASSWORD = 'password';
+const EMAIL = 'test@user.com';
 
 async function main() {
+  console.log(`
+    INSERT INTO auth.users
+(instance_id, id, aud, role, email, encrypted_password, email_confirmed_at, recovery_sent_at, last_sign_in_at, raw_app_meta_data, raw_user_meta_data, created_at, updated_at, confirmation_token, email_change, email_change_token_new, recovery_token)
+VALUES
+('00000000-0000-0000-0000-000000000000', '${userId}', 'authenticated', 'authenticated', '${EMAIL}', crypt('${PASSWORD}', gen_salt('bf')), '2023-05-03 19:41:43.585805+00', '2023-04-22 13:10:03.275387+00', '2023-04-22 13:10:31.458239+00', '{"provider":"email","providers":["email"]}', '{}', '2023-05-03 19:41:43.580424+00', '2023-05-03 19:41:43.585948+00', '', '', '', '');
+  
+INSERT INTO auth.identities (id, user_id, provider_id, identity_data, provider, last_sign_in_at, created_at, updated_at)
+VALUES
+(gen_random_uuid(), '${userId}'::uuid, '${userId}', format('{"sub":"%s","email":"%s"}', '${userId}', '${EMAIL}')::jsonb, 'email', '2023-05-03 19:41:43.582456+00', '2023-05-03 19:41:43.582497+00', '2023-05-03 19:41:43.582497+00');
+`);
+
   const seed = await createSeedClient({
     dryRun: true,
     models: {
@@ -95,43 +112,28 @@ async function main() {
     },
   });
 
-  const { users } = await seed.users([
+  const profiles = [
     {
-      email: 'test@user.com',
-      // PASSWORD = 'testuser';
-      encryptedPassword: '$2a$10$wbpRytlVVSHH6ltji2634eOWKx2Hz2RK4TXvzaiyRxXdJjlSWBlK6',
-      // aud: 'authenticated',
-      // role: 'authenticated',
-      // rawAppMetaData: {
-      //   provider: 'email',
-      //   providers: ['email'],
-      // },
-      // rawUserMetaData: {
-      //   email: 'test@user.com',
-      //   email_verified: true,
-      //   phone_verified: false,
-      // },
-      // invitedAt: null,
-      // confirmationToken: null,
-      // confirmationSentAt: null,
-      // recoveryToken: null,
-      // recoverySentAt: null,
-      // emailChange: null,
-      // emailChangeSentAt: null,
-      // emailChangeTokenNew: null,
-      // bannedUntil: null,
-      // reauthenticationSentAt: null,
-      // deletedAt: null,
-      // isAnonymous: false,
-      // isSsoUser: false,
+      id: userId,
     },
-  ]);
+  ];
 
-  const profiles = users.map((user) => ({
-    id: user.id,
-  }));
-
-  const { exercises } = await seed.exercises((x) => x(10));
+  const { exercises } = await seed.exercises(
+    // @ts-expect-error
+    file.exercises.map((exercise) => {
+      return {
+        name: exercise.name,
+        category: exercise.category,
+        instructions: exercise.instructions,
+        equipment: exercise.equipment,
+        video: exercise.video,
+        primaryMuscles: exercise.primary_muscles,
+        secondaryMuscles: exercise.secondary_muscles,
+        image: null,
+        userId: null,
+      };
+    })
+  );
   const { routines } = await seed.routines((x) => x(5));
   const { routineWeeks } = await seed.routineWeeks((x) => x(routines.length * 4), {
     connect: {
@@ -175,3 +177,38 @@ async function main() {
 }
 
 main();
+
+// Keeping this here in case we want to add more users later.
+function addUsers(seed: SeedClient) {
+  return seed.users([
+    {
+      email: 'test@user.com',
+      // PASSWORD = 'testuser';
+      encryptedPassword: '$2a$10$wbpRytlVVSHH6ltji2634eOWKx2Hz2RK4TXvzaiyRxXdJjlSWBlK6',
+      aud: 'authenticated',
+      role: 'authenticated',
+      rawAppMetaData: {
+        provider: 'email',
+        providers: ['email'],
+      },
+      rawUserMetaData: {
+        email: 'test@user.com',
+        email_verified: true,
+        phone_verified: false,
+      },
+      invitedAt: null,
+      confirmationToken: null,
+      confirmationSentAt: null,
+      recoveryToken: null,
+      recoverySentAt: null,
+      emailChange: null,
+      emailChangeSentAt: null,
+      emailChangeTokenNew: null,
+      bannedUntil: null,
+      reauthenticationSentAt: null,
+      deletedAt: null,
+      isAnonymous: false,
+      isSsoUser: false,
+    },
+  ]);
+}
