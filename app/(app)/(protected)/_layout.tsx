@@ -1,6 +1,7 @@
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
 
+import { colors } from '~/constants/colors';
 import { useColorScheme } from '~/lib/useColorScheme';
 
 export default function TabLayout() {
@@ -9,7 +10,12 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: isDarkColorScheme ? '#fff' : '#000',
+        headerShown: true,
+        tabBarStyle: {
+          backgroundColor: isDarkColorScheme ? colors.dark.background : colors.light.background,
+        },
+        tabBarActiveTintColor: isDarkColorScheme ? colors.dark.foreground : colors.light.foreground,
+        tabBarShowLabel: false,
       }}>
       <Tabs.Screen
         name="index"

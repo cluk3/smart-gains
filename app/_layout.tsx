@@ -2,22 +2,25 @@ import '~/global.css';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Theme, ThemeProvider } from '@react-navigation/native';
-import { SplashScreen, Stack } from 'expo-router';
+import { Slot, SplashScreen } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import * as React from 'react';
 import { Platform } from 'react-native';
 
+import { SupabaseProvider, useSupabaseInit } from '~/context/supabase-provider';
 import { NAV_THEME } from '~/lib/constants';
 import { useColorScheme } from '~/lib/useColorScheme';
 
 const LIGHT_THEME: Theme = {
   dark: false,
   colors: NAV_THEME.light,
+  // @ts-expect-error TODO fix fonts
   fonts: {},
 };
 const DARK_THEME: Theme = {
   dark: true,
   colors: NAV_THEME.dark,
+  // @ts-expect-error TODO fix fonts
   fonts: {},
 };
 
@@ -32,6 +35,8 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   const { colorScheme, setColorScheme, isDarkColorScheme } = useColorScheme();
   const [isColorSchemeLoaded, setIsColorSchemeLoaded] = React.useState(false);
+
+  const sup = useSupabaseInit();
 
   React.useEffect(() => {
     (async () => {
@@ -52,28 +57,29 @@ export default function RootLayout() {
         setIsColorSchemeLoaded(true);
         return;
       }
+
       setIsColorSchemeLoaded(true);
     })().finally(() => {
       SplashScreen.hideAsync();
     });
   }, []);
 
-  if (!isColorSchemeLoaded) {
+  React.useEffect(() => {
+    if (sup.initialized && isColorSchemeLoaded) {
+      SplashScreen.hideAsync();
+    }
+  }, [sup.initialized]);
+
+  if (!isColorSchemeLoaded || !sup.initialized) {
     return null;
   }
 
   return (
     <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
       <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-      </Stack>
+      <SupabaseProvider {...sup}>
+        <Slot />
+      </SupabaseProvider>
     </ThemeProvider>
   );
 }
-
-export const unstable_settings = {
-  // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(tabs)',
-};

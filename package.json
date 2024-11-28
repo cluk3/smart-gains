@@ -12,10 +12,15 @@
     "prebuild": "expo prebuild",
     "lint": "eslint \"**/*.{js,jsx,ts,tsx}\" && prettier -c \"**/*.{js,jsx,ts,tsx,json}\"",
     "format": "eslint \"**/*.{js,jsx,ts,tsx}\" --fix && prettier \"**/*.{js,jsx,ts,tsx,json}\" --write",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "seed:sync": "pnpx @snaplet/seed sync",
+    "seed:gen": "pnpx tsx seed.ts > supabase/seed.sql",
+    "supabase:start": "supabase start",
+    "supabase:typegen": "supabase gen types typescript --project-id txjqycwkbvispusmunks > supabase/types.ts"
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.0",
+    "@hookform/resolvers": "^3.9.1",
     "@react-native-async-storage/async-storage": "1.23.1",
     "@rn-primitives/accordion": "^1.1.0",
     "@rn-primitives/alert-dialog": "^1.1.0",
@@ -49,6 +54,7 @@
     "expo": "^52.0.11",
     "expo-constants": "~17.0.3",
     "expo-dev-client": "~5.0.4",
+    "expo-image": "^2.0.2",
     "expo-linking": "~7.0.3",
     "expo-router": "~4.0.9",
     "expo-status-bar": "~2.0.0",
@@ -71,13 +77,18 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "@dotenvx/dotenvx": "^1.25.1",
+    "@snaplet/copycat": "^5.1.0",
+    "@snaplet/seed": "0.98.0",
     "@types/react": "~18.3.12",
     "@typescript-eslint/eslint-plugin": "^7.7.0",
     "@typescript-eslint/parser": "^7.7.0",
     "eslint": "^8.57.0",
     "eslint-config-universe": "^12.0.1",
+    "postgres": "^3.4.5",
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.5.11",
+    "supabase": "^1.223.10",
     "tailwindcss": "^3.4.0",
     "typescript": "~5.3.3"
   },
