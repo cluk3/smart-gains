@@ -7,8 +7,8 @@ import { StatusBar } from 'expo-status-bar';
 import * as React from 'react';
 import { Platform } from 'react-native';
 
+import { NAV_THEME } from '~/constants/colors';
 import { SupabaseProvider, useSupabaseInit } from '~/context/supabase-provider';
-import { NAV_THEME } from '~/lib/constants';
 import { useColorScheme } from '~/lib/useColorScheme';
 
 const LIGHT_THEME: Theme = {
@@ -38,6 +38,8 @@ export default function RootLayout() {
 
   const sup = useSupabaseInit();
 
+  console.log('colorScheme', colorScheme);
+
   React.useEffect(() => {
     (async () => {
       const theme = await AsyncStorage.getItem('theme');
@@ -47,32 +49,23 @@ export default function RootLayout() {
       }
       if (!theme) {
         AsyncStorage.setItem('theme', colorScheme);
-        setIsColorSchemeLoaded(true);
         return;
       }
       const colorTheme = theme === 'dark' ? 'dark' : 'light';
       if (colorTheme !== colorScheme) {
         setColorScheme(colorTheme);
-
-        setIsColorSchemeLoaded(true);
-        return;
       }
-
-      setIsColorSchemeLoaded(true);
     })().finally(() => {
-      SplashScreen.hideAsync();
+      setIsColorSchemeLoaded(true);
     });
   }, []);
 
   React.useEffect(() => {
     if (sup.initialized && isColorSchemeLoaded) {
+      console.log('hide splash');
       SplashScreen.hideAsync();
     }
-  }, [sup.initialized]);
-
-  if (!isColorSchemeLoaded || !sup.initialized) {
-    return null;
-  }
+  }, [sup.initialized, isColorSchemeLoaded]);
 
   return (
     <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>

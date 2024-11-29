@@ -4,9 +4,9 @@ export const colors = {
     foreground: 'hsl(229 55% 5%)',
     muted: 'hsl(49 9% 86%)',
     mutedForeground: 'hsl(49 10% 29%)',
-    popover: 'hsl(229 36% 98%)',
+    popover: 'hsl(229 36% 94%)',
     popoverForeground: 'hsl(229 55% 4%)',
-    card: 'hsl(229 36% 98%)',
+    card: 'hsl(229 36% 94%)',
     cardForeground: 'hsl(229 55% 4%)',
     border: 'hsl(229 3% 93%)',
     input: 'hsl(229 3% 93%)',
@@ -40,5 +40,24 @@ export const colors = {
     destructive: 'hsl(14 90% 60%)',
     destructiveForeground: 'hsl(14 90% 0%)',
     ring: 'hsl(229 100% 62%)',
+  },
+};
+
+export const NAV_THEME = {
+  light: {
+    background: colors.light.background,
+    border: colors.light.border,
+    card: colors.light.card,
+    notification: colors.light.accent,
+    primary: colors.light.primary,
+    text: colors.light.primaryForeground,
+  },
+  dark: {
+    background: colors.dark.background,
+    border: colors.dark.border,
+    card: colors.dark.card,
+    notification: colors.dark.accent,
+    primary: colors.dark.primary,
+    text: colors.dark.primaryForeground,
   },
 };

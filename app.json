@@ -16,6 +16,14 @@
         {
           "launchMode": "most-recent"
         }
+      ],
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "hsl(229 100% 62%)",
+          "image": "./assets/splash.png",
+          "resizeMode": "contain"
+        }
       ]
     ],
     "experiments": {
@@ -24,18 +32,15 @@
     },
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.luca.campli.smart-gains"
     },
     "android": {
+      "userInterfaceStyle": "automatic",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"

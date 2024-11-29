@@ -5,17 +5,24 @@ import { colors } from '~/constants/colors';
 import { useColorScheme } from '~/lib/useColorScheme';
 
 export default function TabLayout() {
-  const { isDarkColorScheme } = useColorScheme();
-
+  const { colorScheme } = useColorScheme();
   return (
     <Tabs
       screenOptions={{
         headerShown: true,
         tabBarStyle: {
-          backgroundColor: isDarkColorScheme ? colors.dark.background : colors.light.background,
+          backgroundColor: colors[colorScheme].background,
         },
-        tabBarActiveTintColor: isDarkColorScheme ? colors.dark.foreground : colors.light.foreground,
         tabBarShowLabel: false,
+        headerStyle: {
+          backgroundColor: colors[colorScheme].background,
+        },
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+        headerTintColor: colors[colorScheme].foreground,
+        tabBarActiveTintColor: colors[colorScheme].primary,
+        tabBarInactiveTintColor: colors[colorScheme].foreground,
       }}>
       <Tabs.Screen
         name="index"
@@ -36,6 +43,13 @@ export default function TabLayout() {
         options={{
           title: 'History',
           tabBarIcon: ({ color }) => <TabBarIcon name="history" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="settings"
+        options={{
+          title: 'Settings',
+          tabBarIcon: ({ color }) => <TabBarIcon name="cog" color={color} />,
         }}
       />
     </Tabs>

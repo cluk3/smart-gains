@@ -7,6 +7,17 @@ export const unstable_settings = {
   initialRouteName: '(root)',
 };
 
+const getCommonHeaderStyle = (colorScheme: 'light' | 'dark') => ({
+  headerStyle: {
+    backgroundColor: colors[colorScheme].background,
+  },
+  headerTitleStyle: {
+    fontWeight: 'bold' as const,
+  },
+  headerTintColor: colors[colorScheme].foreground,
+  gestureEnabled: true,
+});
+
 export default function AppLayout() {
   const { colorScheme } = useColorScheme();
 
@@ -20,13 +31,7 @@ export default function AppLayout() {
           presentation: 'modal',
           headerShown: true,
           headerTitle: 'Sign Up',
-          headerStyle: {
-            backgroundColor:
-              colorScheme === 'dark' ? colors.dark.background : colors.light.background,
-          },
-          headerTintColor:
-            colorScheme === 'dark' ? colors.dark.foreground : colors.light.foreground,
-          gestureEnabled: true,
+          ...getCommonHeaderStyle(colorScheme),
         }}
       />
       <Stack.Screen
@@ -35,13 +40,7 @@ export default function AppLayout() {
           presentation: 'modal',
           headerShown: true,
           headerTitle: 'Sign In',
-          headerStyle: {
-            backgroundColor:
-              colorScheme === 'dark' ? colors.dark.background : colors.light.background,
-          },
-          headerTintColor:
-            colorScheme === 'dark' ? colors.dark.foreground : colors.light.foreground,
-          gestureEnabled: true,
+          ...getCommonHeaderStyle(colorScheme),
         }}
       />
       <Stack.Screen
@@ -50,13 +49,7 @@ export default function AppLayout() {
           presentation: 'modal',
           headerShown: true,
           headerTitle: 'Modal',
-          headerStyle: {
-            backgroundColor:
-              colorScheme === 'dark' ? colors.dark.background : colors.light.background,
-          },
-          headerTintColor:
-            colorScheme === 'dark' ? colors.dark.foreground : colors.light.foreground,
-          gestureEnabled: true,
+          ...getCommonHeaderStyle(colorScheme),
         }}
       />
     </Stack>

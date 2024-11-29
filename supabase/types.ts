@@ -7,43 +7,54 @@ export type Database = {
         Row: {
           category: string;
           created_at: string;
-          equipment: Json | null;
+          equipment: Database['public']['Enums']['equipment'][] | null;
           id: string;
           image: string | null;
-          instructions: Json | null;
+          instructions: string[] | null;
           name: string;
-          primary_muscles: Json | null;
-          secondary_muscles: Json | null;
+          primary_muscles: Database['public']['Enums']['muscle'][] | null;
+          secondary_muscles: Database['public']['Enums']['muscle'][] | null;
           updated_at: string;
+          user_id: string | null;
           video: string | null;
         };
         Insert: {
           category: string;
           created_at?: string;
-          equipment?: Json | null;
+          equipment?: Database['public']['Enums']['equipment'][] | null;
           id?: string;
           image?: string | null;
-          instructions?: Json | null;
+          instructions?: string[] | null;
           name: string;
-          primary_muscles?: Json | null;
-          secondary_muscles?: Json | null;
+          primary_muscles?: Database['public']['Enums']['muscle'][] | null;
+          secondary_muscles?: Database['public']['Enums']['muscle'][] | null;
           updated_at?: string;
+          user_id?: string | null;
           video?: string | null;
         };
         Update: {
           category?: string;
           created_at?: string;
-          equipment?: Json | null;
+          equipment?: Database['public']['Enums']['equipment'][] | null;
           id?: string;
           image?: string | null;
-          instructions?: Json | null;
+          instructions?: string[] | null;
           name?: string;
-          primary_muscles?: Json | null;
-          secondary_muscles?: Json | null;
+          primary_muscles?: Database['public']['Enums']['muscle'][] | null;
+          secondary_muscles?: Database['public']['Enums']['muscle'][] | null;
           updated_at?: string;
+          user_id?: string | null;
           video?: string | null;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: 'exercises_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+        ];
       };
       profiles: {
         Row: {
@@ -52,7 +63,7 @@ export type Database = {
           id: string;
           updated_at: string | null;
           username: string | null;
-          website: string | null;
+          weight_unit: Database['public']['Enums']['weight_unit'] | null;
         };
         Insert: {
           avatar_url?: string | null;
@@ -60,7 +71,7 @@ export type Database = {
           id: string;
           updated_at?: string | null;
           username?: string | null;
-          website?: string | null;
+          weight_unit?: Database['public']['Enums']['weight_unit'] | null;
         };
         Update: {
           avatar_url?: string | null;
@@ -68,182 +79,50 @@ export type Database = {
           id?: string;
           updated_at?: string | null;
           username?: string | null;
-          website?: string | null;
+          weight_unit?: Database['public']['Enums']['weight_unit'] | null;
         };
         Relationships: [];
       };
-      program_plan_exercises: {
-        Row: {
-          alternative_exercises: Json;
-          created_at: string;
-          exercise_id: string;
-          id: string;
-          notes: string | null;
-          order: number;
-          sets: Json;
-          tempo_concentric: number | null;
-          tempo_eccentric: number | null;
-          tempo_iso_bottom: number | null;
-          tempo_iso_top: number | null;
-          updated_at: string;
-          workout_id: string;
-        };
-        Insert: {
-          alternative_exercises: Json;
-          created_at?: string;
-          exercise_id: string;
-          id?: string;
-          notes?: string | null;
-          order: number;
-          sets: Json;
-          tempo_concentric?: number | null;
-          tempo_eccentric?: number | null;
-          tempo_iso_bottom?: number | null;
-          tempo_iso_top?: number | null;
-          updated_at: string;
-          workout_id: string;
-        };
-        Update: {
-          alternative_exercises?: Json;
-          created_at?: string;
-          exercise_id?: string;
-          id?: string;
-          notes?: string | null;
-          order?: number;
-          sets?: Json;
-          tempo_concentric?: number | null;
-          tempo_eccentric?: number | null;
-          tempo_iso_bottom?: number | null;
-          tempo_iso_top?: number | null;
-          updated_at?: string;
-          workout_id?: string;
-        };
-        Relationships: [
-          {
-            foreignKeyName: 'program_plan_exercises_exercise_id_fkey';
-            columns: ['exercise_id'];
-            isOneToOne: false;
-            referencedRelation: 'exercises';
-            referencedColumns: ['id'];
-          },
-          {
-            foreignKeyName: 'program_plan_exercises_workout_id_fkey';
-            columns: ['workout_id'];
-            isOneToOne: false;
-            referencedRelation: 'program_plan_workouts';
-            referencedColumns: ['id'];
-          },
-        ];
-      };
-      program_plan_weeks: {
-        Row: {
-          created_at: string;
-          description: string | null;
-          id: string;
-          name: string;
-          program_id: string;
-          updated_at: string;
-          week_number: number;
-        };
-        Insert: {
-          created_at?: string;
-          description?: string | null;
-          id?: string;
-          name: string;
-          program_id: string;
-          updated_at: string;
-          week_number: number;
-        };
-        Update: {
-          created_at?: string;
-          description?: string | null;
-          id?: string;
-          name?: string;
-          program_id?: string;
-          updated_at?: string;
-          week_number?: number;
-        };
-        Relationships: [
-          {
-            foreignKeyName: 'program_plan_weeks_program_id_fkey';
-            columns: ['program_id'];
-            isOneToOne: false;
-            referencedRelation: 'program_plans';
-            referencedColumns: ['id'];
-          },
-        ];
-      };
-      program_plan_workouts: {
+      programs: {
         Row: {
           created_at: string;
           id: string;
-          name: string;
-          order: number;
-          updated_at: string;
-          week_id: string;
-        };
-        Insert: {
-          created_at?: string;
-          id?: string;
-          name: string;
-          order: number;
-          updated_at: string;
-          week_id: string;
-        };
-        Update: {
-          created_at?: string;
-          id?: string;
-          name?: string;
-          order?: number;
-          updated_at?: string;
-          week_id?: string;
-        };
-        Relationships: [
-          {
-            foreignKeyName: 'program_plan_workouts_week_id_fkey';
-            columns: ['week_id'];
-            isOneToOne: false;
-            referencedRelation: 'program_plan_weeks';
-            referencedColumns: ['id'];
-          },
-        ];
-      };
-      program_plans: {
-        Row: {
-          created_at: string;
-          id: string;
-          program_template_id: string;
-          template_version: number;
+          routine_id: string;
           updated_at: string;
           user_id: string;
         };
         Insert: {
           created_at?: string;
           id?: string;
-          program_template_id: string;
-          template_version: number;
-          updated_at: string;
+          routine_id: string;
+          updated_at?: string;
           user_id: string;
         };
         Update: {
           created_at?: string;
           id?: string;
-          program_template_id?: string;
-          template_version?: number;
+          routine_id?: string;
           updated_at?: string;
           user_id?: string;
         };
         Relationships: [
           {
-            foreignKeyName: 'program_plans_program_template_id_fkey';
-            columns: ['program_template_id'];
+            foreignKeyName: 'programs_routine_id_fkey';
+            columns: ['routine_id'];
+            isOneToOne: true;
+            referencedRelation: 'routines';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'programs_user_id_fkey';
+            columns: ['user_id'];
             isOneToOne: false;
-            referencedRelation: 'program_templates';
+            referencedRelation: 'profiles';
             referencedColumns: ['id'];
           },
         ];
       };
-      program_template_exercises: {
+      routine_exercises: {
         Row: {
           alternative_exercises: Json | null;
           created_at: string;
@@ -271,7 +150,7 @@ export type Database = {
           tempo_eccentric?: number | null;
           tempo_iso_bottom?: number | null;
           tempo_iso_top?: number | null;
-          updated_at: string;
+          updated_at?: string;
           workout_id: string;
         };
         Update: {
@@ -291,22 +170,22 @@ export type Database = {
         };
         Relationships: [
           {
-            foreignKeyName: 'program_template_exercises_exercise_id_fkey';
+            foreignKeyName: 'routine_exercises_exercise_id_fkey';
             columns: ['exercise_id'];
             isOneToOne: false;
             referencedRelation: 'exercises';
             referencedColumns: ['id'];
           },
           {
-            foreignKeyName: 'program_template_exercises_workout_id_fkey';
+            foreignKeyName: 'routine_exercises_workout_id_fkey';
             columns: ['workout_id'];
             isOneToOne: false;
-            referencedRelation: 'program_template_workouts';
+            referencedRelation: 'routine_workouts';
             referencedColumns: ['id'];
           },
         ];
       };
-      program_template_weeks: {
+      routine_weeks: {
         Row: {
           created_at: string;
           description: string | null;
@@ -322,7 +201,7 @@ export type Database = {
           id?: string;
           name: string;
           program_id: string;
-          updated_at: string;
+          updated_at?: string;
           week_number: number;
         };
         Update: {
@@ -336,15 +215,15 @@ export type Database = {
         };
         Relationships: [
           {
-            foreignKeyName: 'program_template_weeks_program_id_fkey';
+            foreignKeyName: 'routine_weeks_program_id_fkey';
             columns: ['program_id'];
             isOneToOne: false;
-            referencedRelation: 'program_templates';
+            referencedRelation: 'routines';
             referencedColumns: ['id'];
           },
         ];
       };
-      program_template_workouts: {
+      routine_workouts: {
         Row: {
           created_at: string;
           id: string;
@@ -358,7 +237,7 @@ export type Database = {
           id?: string;
           name: string;
           order: number;
-          updated_at: string;
+          updated_at?: string;
           week_id: string;
         };
         Update: {
@@ -371,56 +250,47 @@ export type Database = {
         };
         Relationships: [
           {
-            foreignKeyName: 'program_template_workouts_week_id_fkey';
+            foreignKeyName: 'routine_workouts_week_id_fkey';
             columns: ['week_id'];
             isOneToOne: false;
-            referencedRelation: 'program_template_weeks';
+            referencedRelation: 'routine_weeks';
             referencedColumns: ['id'];
           },
         ];
       };
-      program_templates: {
+      routines: {
         Row: {
           created_at: string;
-          creator_id: string;
           description: string | null;
-          difficulty_level: Json | null;
+          difficulty_level: Database['public']['Enums']['difficulty_level'][] | null;
           focus_area: string | null;
           id: string;
           image: string | null;
           minutes_per_workout: number | null;
           name: string;
-          original_creator: string | null;
           updated_at: string;
-          version: number;
         };
         Insert: {
           created_at?: string;
-          creator_id: string;
           description?: string | null;
-          difficulty_level?: Json | null;
+          difficulty_level?: Database['public']['Enums']['difficulty_level'][] | null;
           focus_area?: string | null;
           id?: string;
           image?: string | null;
           minutes_per_workout?: number | null;
           name: string;
-          original_creator?: string | null;
-          updated_at: string;
-          version: number;
+          updated_at?: string;
         };
         Update: {
           created_at?: string;
-          creator_id?: string;
           description?: string | null;
-          difficulty_level?: Json | null;
+          difficulty_level?: Database['public']['Enums']['difficulty_level'][] | null;
           focus_area?: string | null;
           id?: string;
           image?: string | null;
           minutes_per_workout?: number | null;
           name?: string;
-          original_creator?: string | null;
           updated_at?: string;
-          version?: number;
         };
         Relationships: [];
       };
@@ -433,6 +303,7 @@ export type Database = {
           order: number;
           sets: Json;
           updated_at: string;
+          weight_unit: Database['public']['Enums']['weight_unit'];
           workout_id: string;
         };
         Insert: {
@@ -442,7 +313,8 @@ export type Database = {
           notes?: string | null;
           order: number;
           sets: Json;
-          updated_at: string;
+          updated_at?: string;
+          weight_unit: Database['public']['Enums']['weight_unit'];
           workout_id: string;
         };
         Update: {
@@ -453,6 +325,7 @@ export type Database = {
           order?: number;
           sets?: Json;
           updated_at?: string;
+          weight_unit?: Database['public']['Enums']['weight_unit'];
           workout_id?: string;
         };
         Relationships: [
@@ -477,38 +350,42 @@ export type Database = {
           created_at: string;
           duration: number;
           id: string;
-          program_plan_workout_id: string | null;
-          start_date: number;
+          routine_workout_id: string | null;
+          start_date: string;
           updated_at: string;
           user_id: string;
-          weight_unit: string;
         };
         Insert: {
           created_at?: string;
           duration: number;
           id?: string;
-          program_plan_workout_id?: string | null;
-          start_date: number;
-          updated_at: string;
+          routine_workout_id?: string | null;
+          start_date: string;
+          updated_at?: string;
           user_id: string;
-          weight_unit: string;
         };
         Update: {
           created_at?: string;
           duration?: number;
           id?: string;
-          program_plan_workout_id?: string | null;
-          start_date?: number;
+          routine_workout_id?: string | null;
+          start_date?: string;
           updated_at?: string;
           user_id?: string;
-          weight_unit?: string;
         };
         Relationships: [
           {
-            foreignKeyName: 'workout_trackings_program_plan_workout_id_fkey';
-            columns: ['program_plan_workout_id'];
+            foreignKeyName: 'workout_trackings_routine_workout_id_fkey';
+            columns: ['routine_workout_id'];
             isOneToOne: true;
-            referencedRelation: 'program_plan_workouts';
+            referencedRelation: 'routine_workouts';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'workout_trackings_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
             referencedColumns: ['id'];
           },
         ];
@@ -521,7 +398,43 @@ export type Database = {
       [_ in never]: never;
     };
     Enums: {
-      [_ in never]: never;
+      difficulty_level: 'beginner' | 'novice' | 'intermediate' | 'advanced';
+      equipment:
+        | 'none'
+        | 'ez curl bar'
+        | 'barbell'
+        | 'dumbbell'
+        | 'gym mat'
+        | 'exercise ball'
+        | 'medicine ball'
+        | 'pull-up bar'
+        | 'bench'
+        | 'incline bench'
+        | 'kettlebell'
+        | 'machine'
+        | 'cable'
+        | 'bands'
+        | 'foam roll'
+        | 'other';
+      muscle:
+        | 'neck'
+        | 'traps'
+        | 'shoulders'
+        | 'chest'
+        | 'biceps'
+        | 'triceps'
+        | 'forearms'
+        | 'lats'
+        | 'middle back'
+        | 'lower back'
+        | 'abs'
+        | 'obliques'
+        | 'glutes'
+        | 'adductors'
+        | 'quads'
+        | 'hamstrings'
+        | 'calves';
+      weight_unit: 'kg' | 'lb';
     };
     CompositeTypes: {
       [_ in never]: never;

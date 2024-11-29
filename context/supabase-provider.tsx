@@ -70,6 +70,7 @@ export function useSupabaseInit(): SupabaseContextProps {
     });
 
     supabase.auth.onAuthStateChange((_event, session) => {
+      console.log('onAuthStateChange', session);
       setSession(session);
       setUser(session ? session.user : null);
     });
@@ -81,8 +82,11 @@ export function useSupabaseInit(): SupabaseContextProps {
     const inProtectedGroup = segments[1] === '(protected)';
 
     if (session && !inProtectedGroup) {
+      console.log('login');
       router.replace('/(app)/(protected)');
     } else if (!session) {
+      console.log('onlogout');
+
       router.replace('/(app)/welcome');
     }
   }, [initialized, session]);
