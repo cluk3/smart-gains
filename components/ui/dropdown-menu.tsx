@@ -96,9 +96,9 @@ const DropdownMenuContent = React.forwardRef<
         style={
           overlayStyle
             ? StyleSheet.flatten([
-                Platform.OS !== 'web' ? StyleSheet.absoluteFill : undefined,
+                Platform.OS === 'web' ? undefined : StyleSheet.absoluteFill,
                 overlayStyle,
-              ] as ViewStyle)
+              ] as unknown as ViewStyle)
             : Platform.OS !== 'web'
               ? StyleSheet.absoluteFill
               : undefined

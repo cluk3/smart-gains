@@ -20,7 +20,7 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "hsl(229 100% 62%)",
+          "backgroundColor": "#3d61ff",
           "image": "./assets/splash.png",
           "resizeMode": "contain"
         }
@@ -43,7 +43,7 @@
       "userInterfaceStyle": "automatic",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#3d61ff"
       },
       "package": "com.luca.campli.smartgains"
     },

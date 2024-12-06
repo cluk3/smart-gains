@@ -23,7 +23,7 @@ create table
 create table
   routine_weeks (
     id uuid primary key default gen_random_uuid (),
-    program_id uuid not null references routines (id) on delete cascade,
+    routine_id uuid not null references routines (id) on delete cascade,
     week_number int not null,
     name text not null,
     description text,
@@ -46,7 +46,7 @@ create table
     id uuid primary key default gen_random_uuid (),
     exercise_id uuid not null references exercises (id) on delete cascade,
     workout_id uuid not null references routine_workouts (id) on delete cascade,
-    sets json not null,
+    sets jsonb not null,
     alternative_exercises json,
     "order" int not null,
     notes text,

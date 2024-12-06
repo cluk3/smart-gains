@@ -71,17 +71,44 @@ VALUES
       },
       routineExercises: {
         data: {
-          sets: () => ({
-            type: SET_TYPES.normal,
-            intensity: {
-              type: INTENSITY_TYPES.rpe,
-              value: faker.number.int({ min: 1, max: 10 }),
+          sets: () => [
+            {
+              id: faker.string.uuid(),
+              type: SET_TYPES.normal,
+              intensity: {
+                type: INTENSITY_TYPES.rpe,
+                value: faker.number.int({ min: 1, max: 10 }),
+              },
+              target: {
+                type: TARGET_TYPES.rep,
+                reps: faker.number.int({ min: 1, max: 20 }),
+              },
             },
-            target: {
-              type: TARGET_TYPES.rep,
-              reps: faker.number.int({ min: 1, max: 20 }),
+            {
+              id: faker.string.uuid(),
+              type: SET_TYPES.normal,
+              intensity: {
+                type: INTENSITY_TYPES.rpe,
+                value: faker.number.int({ min: 1, max: 10 }),
+              },
+              target: {
+                type: TARGET_TYPES.rep,
+                reps: faker.number.int({ min: 1, max: 20 }),
+              },
             },
-          }),
+            {
+              id: faker.string.uuid(),
+              type: SET_TYPES.normal,
+              intensity: {
+                type: INTENSITY_TYPES.rpe,
+                value: faker.number.int({ min: 1, max: 10 }),
+              },
+              target: {
+                type: TARGET_TYPES.rep,
+                reps: faker.number.int({ min: 1, max: 20 }),
+              },
+            },
+          ],
           order: () => faker.number.int({ min: 1, max: 10 }),
           notes: () => faker.lorem.sentences(3),
           tempoEccentric: () => faker.number.int({ min: 1, max: 5 }),
@@ -99,12 +126,29 @@ VALUES
       workoutExerciseTrackings: {
         data: {
           order: () => faker.number.int({ min: 1, max: 10 }),
-          sets: () => ({
-            rpe: faker.number.int({ min: 1, max: 10 }),
-            weight: faker.number.int({ min: 0, max: 200 }),
-            measurement: faker.number.int({ min: 1, max: 20 }),
-            type: MEASUREMENT_TYPES.reps,
-          }),
+          sets: () => [
+            {
+              id: faker.string.uuid(),
+              rpe: faker.number.int({ min: 1, max: 10 }),
+              weight: faker.number.int({ min: 0, max: 200 }),
+              measurement: faker.number.int({ min: 1, max: 20 }),
+              type: MEASUREMENT_TYPES.reps,
+            },
+            {
+              id: faker.string.uuid(),
+              rpe: faker.number.int({ min: 1, max: 10 }),
+              weight: faker.number.int({ min: 0, max: 200 }),
+              measurement: faker.number.int({ min: 1, max: 20 }),
+              type: MEASUREMENT_TYPES.reps,
+            },
+            {
+              id: faker.string.uuid(),
+              rpe: faker.number.int({ min: 1, max: 10 }),
+              weight: faker.number.int({ min: 0, max: 200 }),
+              measurement: faker.number.int({ min: 1, max: 20 }),
+              type: MEASUREMENT_TYPES.reps,
+            },
+          ],
           notes: () => faker.lorem.sentences(1),
           weightUnit: () => faker.helpers.enumValue(WEIGHT_UNITS),
         },

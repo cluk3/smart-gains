@@ -83,7 +83,7 @@ export function useSupabaseInit(): SupabaseContextProps {
 
     if (session && !inProtectedGroup) {
       console.log('login');
-      router.replace('/(app)/(protected)');
+      router.replace('/(app)/(protected)/(tabs)');
     } else if (!session) {
       console.log('onlogout');
 

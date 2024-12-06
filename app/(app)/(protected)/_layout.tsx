@@ -1,64 +1,51 @@
-import { FontAwesome5 } from '@expo/vector-icons';
-import { Tabs } from 'expo-router';
+import { Stack } from 'expo-router';
 
 import { colors } from '~/constants/colors';
 import { useColorScheme } from '~/lib/useColorScheme';
 
-export default function TabLayout() {
-  const { colorScheme } = useColorScheme();
-  return (
-    <Tabs
-      screenOptions={{
-        headerShown: true,
-        tabBarStyle: {
-          backgroundColor: colors[colorScheme].background,
-        },
-        tabBarShowLabel: false,
-        headerStyle: {
-          backgroundColor: colors[colorScheme].background,
-        },
-        headerTitleStyle: {
-          fontWeight: 'bold',
-        },
-        headerTintColor: colors[colorScheme].foreground,
-        tabBarActiveTintColor: colors[colorScheme].primary,
-        tabBarInactiveTintColor: colors[colorScheme].foreground,
-      }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="train"
-        options={{
-          title: 'Train',
-          tabBarIcon: ({ color }) => <TabBarIcon name="dumbbell" color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="history"
-        options={{
-          title: 'History',
-          tabBarIcon: ({ color }) => <TabBarIcon name="history" color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="settings"
-        options={{
-          title: 'Settings',
-          tabBarIcon: ({ color }) => <TabBarIcon name="cog" color={color} />,
-        }}
-      />
-    </Tabs>
-  );
-}
+export const unstable_settings = {
+  initialRouteName: '(root)',
+};
 
-function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome5>['name'];
-  color: string;
-}) {
-  return <FontAwesome5 size={20} style={{ marginBottom: -3 }} {...props} />;
+export default function RoutinesLayout() {
+  const { colorScheme } = useColorScheme();
+
+  return (
+    <Stack>
+      <Stack.Screen
+        name="(tabs)"
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="routines/[id]"
+        options={{
+          headerShown: true,
+          headerTitle: 'Routine',
+          headerStyle: {
+            backgroundColor: colors[colorScheme].background,
+          },
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          headerTintColor: colors[colorScheme].foreground,
+        }}
+      />
+      <Stack.Screen
+        name="exercises/[exerciseId]"
+        options={{
+          headerShown: true,
+          headerTitle: 'Exercise',
+          headerStyle: {
+            backgroundColor: colors[colorScheme].background,
+          },
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          headerTintColor: colors[colorScheme].foreground,
+        }}
+      />
+    </Stack>
+  );
 }

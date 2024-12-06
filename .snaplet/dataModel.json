@@ -3109,9 +3109,9 @@
           "maxLength": null
         },
         {
-          "id": "public.routine_weeks.program_id",
-          "name": "program_id",
-          "columnName": "program_id",
+          "id": "public.routine_weeks.routine_id",
+          "name": "routine_id",
+          "columnName": "routine_id",
           "type": "uuid",
           "isRequired": true,
           "kind": "scalar",
@@ -3198,7 +3198,7 @@
           "isRequired": true,
           "kind": "object",
           "relationName": "routine_weeksToroutines",
-          "relationFromFields": ["program_id"],
+          "relationFromFields": ["routine_id"],
           "relationToFields": ["id"],
           "isList": false,
           "isId": false,

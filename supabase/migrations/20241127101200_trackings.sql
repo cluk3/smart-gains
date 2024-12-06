@@ -14,7 +14,7 @@ create table
     id uuid primary key default gen_random_uuid (),
     exercise_id uuid not null references exercises (id) on delete cascade,
     workout_id uuid not null references workout_trackings (id) on delete cascade,
-    sets json not null,
+    sets jsonb not null,
     "order" int not null,
     notes text,
     created_at timestamptz not null default now(),

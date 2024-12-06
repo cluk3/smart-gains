@@ -33,7 +33,7 @@ const H2 = React.forwardRef<TextRef, SlottableTextProps>(
         role="heading"
         aria-level="2"
         className={cn(
-          'border-b border-border pb-2 text-3xl font-semibold tracking-tight text-foreground first:mt-0 web:select-text web:scroll-m-20',
+          'pb-2 text-3xl font-semibold tracking-tight text-foreground first:mt-0 web:select-text web:scroll-m-20',
           className
         )}
         ref={ref}

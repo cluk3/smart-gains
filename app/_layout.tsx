@@ -2,15 +2,16 @@ import '~/global.css';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Theme, ThemeProvider } from '@react-navigation/native';
+import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { Slot, SplashScreen } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import * as React from 'react';
 import { Platform } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { NAV_THEME } from '~/constants/colors';
 import { SupabaseProvider, useSupabaseInit } from '~/context/supabase-provider';
 import { useColorScheme } from '~/lib/useColorScheme';
-
 const LIGHT_THEME: Theme = {
   dark: false,
   colors: NAV_THEME.light,
@@ -36,6 +37,7 @@ export default function RootLayout() {
   const { colorScheme, setColorScheme, isDarkColorScheme } = useColorScheme();
   const [isColorSchemeLoaded, setIsColorSchemeLoaded] = React.useState(false);
 
+  const queryClient = new QueryClient();
   const sup = useSupabaseInit();
 
   console.log('colorScheme', colorScheme);
@@ -68,11 +70,15 @@ export default function RootLayout() {
   }, [sup.initialized, isColorSchemeLoaded]);
 
   return (
-    <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
-      <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
-      <SupabaseProvider {...sup}>
-        <Slot />
-      </SupabaseProvider>
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
+        <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
+        <SupabaseProvider {...sup}>
+          <GestureHandlerRootView style={{ flex: 1 }}>
+            <Slot />
+          </GestureHandlerRootView>
+        </SupabaseProvider>
+      </ThemeProvider>
+    </QueryClientProvider>
   );
 }
