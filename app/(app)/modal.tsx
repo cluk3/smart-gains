@@ -1,12 +1,11 @@
-import { View } from 'react-native';
-
+import { Container } from '~/components/layout';
 import { H1, Muted } from '~/components/ui/typography';
 
 export default function Modal() {
   return (
-    <View className="flex flex-1 items-center justify-center gap-y-4 bg-background p-4">
+    <Container className="items-center justify-center gap-y-4 ">
       <H1 className="text-center">Modal</H1>
       <Muted className="text-center">This is a modal screen.</Muted>
-    </View>
+    </Container>
   );
 }

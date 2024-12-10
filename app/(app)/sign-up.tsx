@@ -51,7 +51,7 @@ export default function SignUp() {
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-background p-4" edges={['bottom']}>
+    <Container edges={['bottom']}>
       <View className="flex-1 gap-4 web:m-4">
         <H1 className="self-start">Sign Up</H1>
 
@@ -111,6 +111,6 @@ export default function SignUp() {
         className="web:m-4">
         {form.formState.isSubmitting ? <ActivityIndicator size="small" /> : <Text>Sign Up</Text>}
       </Button>
-    </SafeAreaView>
+    </Container>
   );
 }

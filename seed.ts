@@ -22,7 +22,7 @@ async function main() {
     INSERT INTO auth.users
 (instance_id, id, aud, role, email, encrypted_password, email_confirmed_at, recovery_sent_at, last_sign_in_at, raw_app_meta_data, raw_user_meta_data, created_at, updated_at, confirmation_token, email_change, email_change_token_new, recovery_token)
 VALUES
-('00000000-0000-0000-0000-000000000000', '${userId}', 'authenticated', 'authenticated', '${EMAIL}', crypt('${PASSWORD}', gen_salt('bf')), '2023-05-03 19:41:43.585805+00', '2023-04-22 13:10:03.275387+00', '2023-04-22 13:10:31.458239+00', '{"provider":"email","providers":["email"]}', '{}', '2023-05-03 19:41:43.580424+00', '2023-05-03 19:41:43.585948+00', '', '', '', '');
+('00000000-0000-0000-0000-000000000000', '${userId}', 'authenticated', 'authenticated', '${EMAIL}', crypt('${PASSWORD}', gen_salt('bf')), '2023-05-03 19:41:43.585805+00', '2023-04-22 13:10:03.275387+00', '2023-04-22 13:10:31.458239+00', '{"provider":"email","providers":["email"]}', '{"full_name":"Test User","avatar_url":"https://avatars.githubusercontent.com/u/123456?v=4","weight_unit":"kg"}', '2023-05-03 19:41:43.580424+00', '2023-05-03 19:41:43.585948+00', '', '', '', '');
   
 INSERT INTO auth.identities (id, user_id, provider_id, identity_data, provider, last_sign_in_at, created_at, updated_at)
 VALUES
@@ -35,6 +35,7 @@ VALUES
       profiles: {
         data: {
           avatarUrl: () => faker.image.avatarGitHub(),
+          weightUnit: () => WEIGHT_UNITS.kg,
         },
       },
       exercises: {

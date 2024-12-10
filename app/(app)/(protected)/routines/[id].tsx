@@ -1,7 +1,8 @@
 import { useQuery } from '@supabase-cache-helpers/postgrest-react-query';
 import { Link, useLocalSearchParams } from 'expo-router';
-import { View, Dimensions, SectionList } from 'react-native';
+import { View, SectionList } from 'react-native';
 
+import { Container } from '~/components/layout';
 import {
   Accordion,
   AccordionContent,
@@ -10,24 +11,23 @@ import {
 } from '~/components/ui/accordion';
 import { Badge } from '~/components/ui/badge';
 import { Text } from '~/components/ui/text';
-import { P, H1, H2, Muted, H4, H3 } from '~/components/ui/typography';
+import { H1, H2, Muted, H4, H3 } from '~/components/ui/typography';
 import { getRoutineById, type Routine as RoutineType } from '~/repository';
 import type { ExerciseSet, SetTarget, Intensity as IntensityType } from '~/types';
 
 export default function RoutineScreen() {
-  const { id } = useLocalSearchParams();
-  const { data, isSuccess } = useQuery(getRoutineById(id as string));
+  const { id } = useLocalSearchParams<{ id: string }>();
+  const { data, isSuccess } = useQuery(getRoutineById(id));
 
   return (
-    <View className="flex flex-1 flex-col gap-y-4 bg-background p-4 pt-10">
+    // TODO: check if pt-10 used for the header can be optimized
+    <Container className="gap-y-4 pt-10">
       {isSuccess && data ? <Routine routine={data} /> : <H2>Loading...</H2>}
-    </View>
+    </Container>
   );
 }
 
 const Routine = ({ routine }: { routine: RoutineType }) => {
-  const width = Dimensions.get('window').width;
-  // console.log('routine', routine);
   return (
     <View className="flex-1 gap-4">
       <H1>{routine.name}</H1>
@@ -51,6 +51,13 @@ const Routine = ({ routine }: { routine: RoutineType }) => {
                 <H3>
                   {workout.order} - {workout.name}
                 </H3>
+                <Link
+                  href={{
+                    pathname: `/(app)/(protected)/track`,
+                    params: { workoutId: workout.id },
+                  }}>
+                  Track
+                </Link>
               </AccordionTrigger>
               <AccordionContent className="flex-1 gap-4">
                 {workout.routine_exercises.map((exercise) => (

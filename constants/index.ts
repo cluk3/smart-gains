@@ -39,3 +39,53 @@ export const WEIGHT_UNITS = {
 } as const;
 
 export const WEIGHT_UNITS_ARR = Object.values(WEIGHT_UNITS);
+
+export const MUSCLES = [
+  'neck',
+  'traps',
+  'shoulders',
+  'chest',
+  'biceps',
+  'triceps',
+  'forearms',
+  'lats',
+  'middle back',
+  'lower back',
+  'abs',
+  'obliques',
+  'glutes',
+  'adductors',
+  'quads',
+  'hamstrings',
+  'calves',
+] as const;
+
+export const CATEGORIES = [
+  'strength',
+  'stretching',
+  'plyometrics',
+  'strongman',
+  'cardio',
+  'olympic weightlifting',
+  'crossfit',
+  'calisthenics',
+] as const;
+
+export const EQUIPMENT = [
+  'none',
+  'ez curl bar',
+  'barbell',
+  'dumbbell',
+  'gym mat',
+  'exercise ball',
+  'medicine ball',
+  'pull-up bar',
+  'bench',
+  'incline bench',
+  'kettlebell',
+  'machine',
+  'cable',
+  'bands',
+  'foam roll',
+  'other',
+] as const;

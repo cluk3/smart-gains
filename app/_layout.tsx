@@ -1,28 +1,26 @@
 import '~/global.css';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Theme, ThemeProvider } from '@react-navigation/native';
+import { type Theme, ThemeProvider, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { Slot, SplashScreen } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import * as React from 'react';
 import { Platform } from 'react-native';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { NAV_THEME } from '~/constants/colors';
 import { SupabaseProvider, useSupabaseInit } from '~/context/supabase-provider';
 import { useColorScheme } from '~/lib/useColorScheme';
+
 const LIGHT_THEME: Theme = {
   dark: false,
   colors: NAV_THEME.light,
-  // @ts-expect-error TODO fix fonts
-  fonts: {},
+  fonts: DefaultTheme.fonts,
 };
 const DARK_THEME: Theme = {
   dark: true,
   colors: NAV_THEME.dark,
-  // @ts-expect-error TODO fix fonts
-  fonts: {},
+  fonts: DarkTheme.fonts,
 };
 
 export {
@@ -64,7 +62,6 @@ export default function RootLayout() {
 
   React.useEffect(() => {
     if (sup.initialized && isColorSchemeLoaded) {
-      console.log('hide splash');
       SplashScreen.hideAsync();
     }
   }, [sup.initialized, isColorSchemeLoaded]);
@@ -74,9 +71,7 @@ export default function RootLayout() {
       <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
         <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
         <SupabaseProvider {...sup}>
-          <GestureHandlerRootView style={{ flex: 1 }}>
-            <Slot />
-          </GestureHandlerRootView>
+          <Slot />
         </SupabaseProvider>
       </ThemeProvider>
     </QueryClientProvider>

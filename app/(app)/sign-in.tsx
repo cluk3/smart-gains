@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { ActivityIndicator, View } from 'react-native';
 import * as z from 'zod';
 
-import { SafeAreaView } from '~/components/safe-area-view';
+import { Container } from '~/components/layout';
 import { Alert } from '~/components/ui/alert';
 import { Button } from '~/components/ui/button';
 import { Form, FormField, FormInput } from '~/components/ui/form';
@@ -36,15 +36,13 @@ export default function SignIn() {
   async function onSubmit(data: z.infer<typeof formSchema>) {
     try {
       await signInWithPassword(data.email, data.password);
-
-      // form.reset();
     } catch (error: Error | any) {
       setFormError(error.message);
     }
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-background p-4" edges={['bottom']}>
+    <Container edges={['bottom']}>
       <View className="flex-1 gap-4 web:m-4">
         <H1 className="self-start ">Sign In</H1>
         <Form {...form}>
@@ -87,14 +85,12 @@ export default function SignIn() {
         )}
       </View>
       <Button
-        size="default"
-        variant="default"
         onPress={form.handleSubmit(onSubmit)}
         disabled={form.formState.isSubmitting}
         className="web:m-4">
         {/* TODO fix ActivityIndicator for web */}
         {form.formState.isSubmitting ? <ActivityIndicator size="small" /> : <Text>Sign In</Text>}
       </Button>
-    </SafeAreaView>
+    </Container>
   );
 }

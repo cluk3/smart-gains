@@ -19,10 +19,11 @@ export default function RoutinesLayout() {
         }}
       />
       <Stack.Screen
-        name="routines/[id]"
+        name="routines"
         options={{
           headerShown: true,
           headerTitle: 'Routine',
+          headerBackTitle: 'Home',
           headerStyle: {
             backgroundColor: colors[colorScheme].background,
           },
@@ -37,6 +38,20 @@ export default function RoutinesLayout() {
         options={{
           headerShown: true,
           headerTitle: 'Exercise',
+          headerStyle: {
+            backgroundColor: colors[colorScheme].background,
+          },
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          headerTintColor: colors[colorScheme].foreground,
+        }}
+      />
+      <Stack.Screen
+        name="track"
+        options={{
+          headerShown: true,
+          headerTitle: 'Track',
           headerStyle: {
             backgroundColor: colors[colorScheme].background,
           },

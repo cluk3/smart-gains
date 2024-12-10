@@ -69,7 +69,6 @@ export type Database = {
           full_name: string | null
           id: string
           updated_at: string | null
-          username: string | null
           weight_unit: Database["public"]["Enums"]["weight_unit"] | null
         }
         Insert: {
@@ -78,7 +77,6 @@ export type Database = {
           full_name?: string | null
           id: string
           updated_at?: string | null
-          username?: string | null
           weight_unit?: Database["public"]["Enums"]["weight_unit"] | null
         }
         Update: {
@@ -87,7 +85,6 @@ export type Database = {
           full_name?: string | null
           id?: string
           updated_at?: string | null
-          username?: string | null
           weight_unit?: Database["public"]["Enums"]["weight_unit"] | null
         }
         Relationships: []
@@ -207,7 +204,7 @@ export type Database = {
           description: string | null
           id: string
           name: string
-          program_id: string
+          routine_id: string
           updated_at: string
           week_number: number
         }
@@ -217,7 +214,7 @@ export type Database = {
           description?: string | null
           id?: string
           name: string
-          program_id: string
+          routine_id: string
           updated_at?: string
           week_number: number
         }
@@ -227,14 +224,14 @@ export type Database = {
           description?: string | null
           id?: string
           name?: string
-          program_id?: string
+          routine_id?: string
           updated_at?: string
           week_number?: number
         }
         Relationships: [
           {
-            foreignKeyName: "routine_weeks_program_id_fkey"
-            columns: ["program_id"]
+            foreignKeyName: "routine_weeks_routine_id_fkey"
+            columns: ["routine_id"]
             isOneToOne: false
             referencedRelation: "routines"
             referencedColumns: ["id"]
@@ -436,6 +433,22 @@ export type Database = {
           table_name: string
         }
         Returns: undefined
+      }
+      upsert_workout_tracking: {
+        Args: {
+          p_routine_workout_id: string
+          p_duration: number
+          p_start_date: string
+          p_exercise_trackings: Json
+        }
+        Returns: {
+          workout_id: string
+          user_id: string
+          routine_workout_id: string
+          duration: number
+          start_date: string
+          exercise_trackings: Json
+        }[]
       }
     }
     Enums: {

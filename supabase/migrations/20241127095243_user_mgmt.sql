@@ -8,13 +8,10 @@ ENUM(
 -- Create a table for public profiles
 create table profiles (
   id uuid references auth.users on delete cascade not null primary key,
-  updated_at timestamp with time zone,
-  username text unique,
+  updated_at timestamptz,
   full_name text,
   avatar_url text,
-  weight_unit weight_unit,
-
-  constraint username_length check (char_length(username) >= 3)
+  weight_unit weight_unit
 );
 -- Set up Row Level Security (RLS)
 -- See https://supabase.com/docs/guides/auth/row-level-security for more details.
@@ -45,6 +42,29 @@ $$ language plpgsql security definer;
 create trigger on_auth_user_created
   after insert on auth.users
   for each row execute procedure public.handle_new_user();
+
+-- This trigger automatically updates raw user meta data when a profile is updated
+create function public.handle_updated_profile()
+returns trigger
+set search_path = ''
+as $$
+begin
+  update auth.users
+  set raw_user_meta_data =
+    jsonb_set(
+      jsonb_set(
+        jsonb_set(raw_user_meta_data, '{full_name}', to_jsonb(NEW.full_name), true),
+        '{avatar_url}', to_jsonb(NEW.avatar_url), true
+      ),
+      '{weight_unit}', to_jsonb(NEW.weight_unit), true
+    )
+  where id = new.id;
+  return new;
+end;
+$$ language plpgsql security definer;
+create trigger on_profiles_updated
+  after update on public.profiles
+  for each row execute procedure public.handle_updated_profile();
 
 -- Set up Storage!
 insert into storage.buckets (id, name)

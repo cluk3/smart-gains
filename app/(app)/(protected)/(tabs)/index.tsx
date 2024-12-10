@@ -12,8 +12,6 @@ import { getPrograms, Programs as ProgramsType } from '~/repository';
 export default function DashboardPage() {
   const { data, isSuccess } = useQuery(getPrograms());
 
-  console.log('programs', data);
-
   return (
     <View className="flex flex-1 flex-col items-center justify-center gap-y-4 bg-background p-4 pt-10">
       <H1 className="text-center">Home</H1>
@@ -44,7 +42,7 @@ const Programs = ({ programs }: { programs: ProgramsType }) => {
                   <CardDescription>Duration: {item.minutes_per_workout} minutes</CardDescription>
                   <CardDescription>Workouts: {item.routine_weeks.length}</CardDescription>
                 </CardHeader>
-                <CardFooter>
+                <CardFooter className="flex flex-row items-center gap-2">
                   {(item.difficulty_level?.length || 0) % 4 === 0 ? (
                     <Badge variant="secondary">
                       <Text>All levels</Text>

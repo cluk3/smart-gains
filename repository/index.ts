@@ -54,6 +54,25 @@ export function getPrograms() {
   );
 }
 
+export function getWorkoutById(id: string) {
+  return supabase
+    .from('routine_workouts')
+    .select(
+      `id, name, order,
+            routine_exercises (id, sets, alternative_exercises, order, notes, tempo_eccentric, tempo_iso_bottom, tempo_iso_top, tempo_concentric,
+              data:exercises (id, name, category, instructions, equipment, video, primary_muscles, secondary_muscles)
+            ),
+            week:routine_weeks!inner (id, name, description, week_number,
+              routine:routines!inner (id, name)
+            )
+  `
+    )
+    .eq('id', id)
+    .order('order', { referencedTable: 'routine_exercises', ascending: true })
+    .single();
+}
+
 export type Programs = QueryData<ReturnType<typeof getPrograms>>;
 export type Routine = QueryData<ReturnType<typeof getRoutineById>>;
 export type Exercise = QueryData<ReturnType<typeof getExerciseById>>;
+export type Workout = QueryData<ReturnType<typeof getWorkoutById>>;

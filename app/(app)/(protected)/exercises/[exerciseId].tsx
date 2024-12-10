@@ -1,7 +1,8 @@
 import { useQuery } from '@supabase-cache-helpers/postgrest-react-query';
 import { useLocalSearchParams } from 'expo-router';
-import { View, Dimensions, SectionList, ScrollView } from 'react-native';
+import { View, SectionList, ScrollView } from 'react-native';
 
+import { Container } from '~/components/layout';
 import {
   Accordion,
   AccordionContent,
@@ -10,21 +11,21 @@ import {
 } from '~/components/ui/accordion';
 import { Badge } from '~/components/ui/badge';
 import { Text } from '~/components/ui/text';
-import { P, H1, H2, Muted, H4 } from '~/components/ui/typography';
+import { P, H1, H2, Muted } from '~/components/ui/typography';
 import { getExerciseById, type Exercise as ExerciseType } from '~/repository';
 import { SetTracking } from '~/types';
 
-export default function RoutineScreen() {
-  const { exerciseId } = useLocalSearchParams();
-  const { data, isSuccess, error } = useQuery(getExerciseById(exerciseId as string));
+export default function ExerciseScreen() {
+  const { exerciseId } = useLocalSearchParams<{ exerciseId: string }>();
+  const { data, isSuccess, error } = useQuery(getExerciseById(exerciseId));
   if (error) {
     return <P>Error: {error.message}</P>;
   }
 
   return (
-    <View className="flex-1 bg-background p-4 pt-10">
+    <Container className="pt-10">
       {isSuccess && data ? <Exercise exercise={data} /> : <H2>Loading...</H2>}
-    </View>
+    </Container>
   );
 }
 

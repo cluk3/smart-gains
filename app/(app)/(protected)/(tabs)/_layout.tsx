@@ -66,7 +66,6 @@ export default function TabsLayout() {
           tabBarIcon: ({ color }) => <TabBarIcon name="cog" color={color} />,
         }}
       />
-      <Tabs.Screen name="routines/[id]" options={{ href: null }} />
     </Tabs>
   );
 }

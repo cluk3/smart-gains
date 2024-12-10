@@ -28,6 +28,14 @@ export const SupabaseContext = createContext<SupabaseContextProps>({
 
 export const useSupabase = () => useContext(SupabaseContext);
 
+export const useUser = () => {
+  const { user } = useSupabase();
+  if (!user) {
+    throw new Error('User not found');
+  }
+  return user;
+};
+
 export function useSupabaseInit(): SupabaseContextProps {
   const router = useRouter();
   const segments = useSegments();
@@ -70,7 +78,6 @@ export function useSupabaseInit(): SupabaseContextProps {
     });
 
     supabase.auth.onAuthStateChange((_event, session) => {
-      console.log('onAuthStateChange', session);
       setSession(session);
       setUser(session ? session.user : null);
     });
