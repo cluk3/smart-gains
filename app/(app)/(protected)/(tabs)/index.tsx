@@ -3,6 +3,7 @@ import { useQuery } from '@supabase-cache-helpers/postgrest-react-query';
 import { router, Link } from 'expo-router';
 import { View, Pressable } from 'react-native';
 
+import { Screen } from '~/components/screen';
 import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
 import { Card, CardDescription, CardHeader, CardTitle, CardFooter } from '~/components/ui/card';
@@ -13,17 +14,19 @@ export default function DashboardPage() {
   const { data, isSuccess } = useQuery(getPrograms());
 
   return (
-    <View className="flex flex-1 flex-col items-center justify-center gap-y-4 bg-background p-4 pt-10">
-      <H1 className="text-center">Home</H1>
-      <Button
-        className="w-full"
-        variant="default"
-        size="default"
-        onPress={() => router.push('/(app)/modal')}>
-        <Text>Open Modal</Text>
-      </Button>
-      {isSuccess && data ? <Programs programs={data} /> : <H2>Loading...</H2>}
-    </View>
+    <Screen preset="scroll">
+      <View className="flex flex-1 flex-col items-center justify-center gap-y-4 bg-background p-4 pt-10">
+        <H1 className="text-center">Home</H1>
+        <Button
+          className="w-full"
+          variant="default"
+          size="default"
+          onPress={() => router.push('/(app)/modal')}>
+          <Text>Open Modal</Text>
+        </Button>
+        {isSuccess && data ? <Programs programs={data} /> : <H2>Loading...</H2>}
+      </View>
+    </Screen>
   );
 }
 

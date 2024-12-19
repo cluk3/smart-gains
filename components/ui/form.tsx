@@ -11,8 +11,10 @@ import {
 import { View } from 'react-native';
 import Animated, { FadeInDown, FadeOut } from 'react-native-reanimated';
 
+import { Checkbox } from './checkbox';
 import { Input } from './input';
 import { Label } from './label';
+import { Select, type Option } from './select';
 import { Text } from './text';
 
 import { cn } from '~/lib/utils';
@@ -162,12 +164,13 @@ type FormItemProps<T extends React.ElementType<any>, U> = Override<
 > & {
   label?: string;
   description?: string;
+  containerClassName?: string;
 };
 
 const FormInput = React.forwardRef<
   React.ElementRef<typeof Input>,
-  FormItemProps<typeof Input, string>
->(({ label, description, onChange, ...props }, ref) => {
+  FormItemProps<typeof Input, string | undefined>
+>(({ label, description, onChange, containerClassName, ...props }, ref) => {
   const inputRef = React.useRef<React.ComponentRef<typeof Input>>(null);
   const { error, formItemNativeID, formDescriptionNativeID, formMessageNativeID } = useFormField();
 
@@ -190,7 +193,7 @@ const FormInput = React.forwardRef<
   }
 
   return (
-    <FormItem>
+    <FormItem className={containerClassName}>
       {!!label && (
         <FormLabel nativeID={formItemNativeID} onPress={handleOnLabelPress}>
           {label}
@@ -214,16 +217,85 @@ const FormInput = React.forwardRef<
     </FormItem>
   );
 });
-
 FormInput.displayName = 'FormInput';
+
+const FormCheckbox = React.forwardRef<
+  React.ElementRef<typeof Checkbox>,
+  Omit<FormItemProps<typeof Checkbox, boolean>, 'checked' | 'onCheckedChange'>
+>(({ label, description, value, onChange, ...props }, ref) => {
+  const { error, formItemNativeID, formDescriptionNativeID, formMessageNativeID } = useFormField();
+
+  function handleOnLabelPress() {
+    onChange?.(!value);
+  }
+
+  return (
+    <FormItem className="px-1">
+      <View className="flex-row items-center gap-3">
+        <Checkbox
+          // ref={ref} TODO: create different component for web which accepts ref
+          aria-labelledby={formItemNativeID}
+          aria-describedby={
+            !error
+              ? `${formDescriptionNativeID}`
+              : `${formDescriptionNativeID} ${formMessageNativeID}`
+          }
+          aria-invalid={!!error}
+          onCheckedChange={onChange}
+          checked={value}
+          {...props}
+        />
+        {!!label && (
+          <FormLabel className="pb-0" nativeID={formItemNativeID} onPress={handleOnLabelPress}>
+            {label}
+          </FormLabel>
+        )}
+      </View>
+      {!!description && <FormDescription>{description}</FormDescription>}
+      <FormMessage />
+    </FormItem>
+  );
+});
+FormCheckbox.displayName = 'FormCheckbox';
+
+const FormSelect = React.forwardRef<
+  React.ElementRef<typeof Select>,
+  Omit<FormItemProps<typeof Select, Partial<Option>>, 'open' | 'onOpenChange' | 'onValueChange'>
+>(({ label, description, onChange, value, ...props }, ref) => {
+  const { error, formItemNativeID, formDescriptionNativeID, formMessageNativeID } = useFormField();
+
+  return (
+    <FormItem>
+      {!!label && <FormLabel nativeID={formItemNativeID}>{label}</FormLabel>}
+      <Select
+        // ref={ref} TODO: create different component for web which accepts ref
+        aria-labelledby={formItemNativeID}
+        aria-describedby={
+          !error
+            ? `${formDescriptionNativeID}`
+            : `${formDescriptionNativeID} ${formMessageNativeID}`
+        }
+        aria-invalid={!!error}
+        value={value ? { label: value?.label ?? '', value: value?.label ?? '' } : undefined}
+        onValueChange={onChange}
+        {...props}
+      />
+      {!!description && <FormDescription>{description}</FormDescription>}
+      <FormMessage />
+    </FormItem>
+  );
+});
+FormSelect.displayName = 'FormSelect';
 
 export {
   Form,
   FormDescription,
   FormField,
   FormInput,
+  FormCheckbox,
   FormItem,
   FormLabel,
+  FormSelect,
   FormMessage,
   useFormField,
 };

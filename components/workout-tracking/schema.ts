@@ -16,25 +16,15 @@ export const workoutTrackingInsertSchema = v.object({
       notes: v.optional(v.string()),
       sets: v.array(
         v.object({
-          type: v.picklist(SET_TYPES_ARR),
-          completed: v.optional(v.boolean(), false),
+          type: v.object({ value: v.picklist(SET_TYPES_ARR), label: v.string() }),
+          completed: v.boolean(),
           rpe: v.pipe(
-            v.optional(v.union([v.string(), v.number()])),
+            v.optional(v.string()),
             v.transform((i) => (i ? Number(i) : undefined)),
             v.optional(v.pipe(v.number(), v.minValue(1), v.maxValue(10)))
           ),
-          weight: v.pipe(
-            v.union([v.string(), v.number()]),
-            v.transform(Number),
-            v.number(),
-            v.minValue(0)
-          ),
-          measurement: v.pipe(
-            v.union([v.string(), v.number()]),
-            v.transform(Number),
-            v.number(),
-            v.minValue(0)
-          ),
+          weight: v.pipe(v.string(), v.transform(Number), v.number(), v.minValue(0)),
+          measurement: v.pipe(v.string(), v.transform(Number), v.number(), v.minValue(0)),
           measurementType: v.picklist(MEASUREMENT_TYPES_ARR),
         })
       ),

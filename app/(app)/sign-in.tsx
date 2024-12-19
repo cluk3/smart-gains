@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { ActivityIndicator, View } from 'react-native';
 import * as z from 'zod';
 
-import { Container } from '~/components/layout';
+import { Screen } from '~/components/screen';
 import { Alert } from '~/components/ui/alert';
 import { Button } from '~/components/ui/button';
 import { Form, FormField, FormInput } from '~/components/ui/form';
@@ -42,7 +42,7 @@ export default function SignIn() {
   }
 
   return (
-    <Container edges={['bottom']}>
+    <Screen safeAreaEdges={['bottom']} preset="fixed" contentContainerClassName="flex-1 p-4">
       <View className="flex-1 gap-4 web:m-4">
         <H1 className="self-start ">Sign In</H1>
         <Form {...form}>
@@ -91,6 +91,6 @@ export default function SignIn() {
         {/* TODO fix ActivityIndicator for web */}
         {form.formState.isSubmitting ? <ActivityIndicator size="small" /> : <Text>Sign In</Text>}
       </Button>
-    </Container>
+    </Screen>
   );
 }

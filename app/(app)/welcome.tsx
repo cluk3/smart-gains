@@ -3,8 +3,8 @@ import React from 'react';
 import { View } from 'react-native';
 
 import { Image } from '~/components/image';
-import { Center, Container } from '~/components/layout';
-import { SafeAreaView } from '~/components/safe-area-view';
+import { Center } from '~/components/layout';
+import { Screen } from '~/components/screen';
 import { Button } from '~/components/ui/button';
 import { Text } from '~/components/ui/text';
 import { H1, Muted } from '~/components/ui/typography';
@@ -18,7 +18,7 @@ export default function WelcomeScreen() {
   }
 
   return (
-    <Container>
+    <Screen preset="fixed" contentContainerClassName="flex-1 p-4" safeAreaEdges={['bottom']}>
       <Center className="gap-y-4 web:m-4">
         <Image source={require('~/assets/icon.png')} className="h-16 w-16 rounded-xl" />
         <H1 className="text-center">Welcome to Expo Supabase Starter</H1>
@@ -42,6 +42,6 @@ export default function WelcomeScreen() {
           <Text>Sign In</Text>
         </Button>
       </View>
-    </Container>
+    </Screen>
   );
 }

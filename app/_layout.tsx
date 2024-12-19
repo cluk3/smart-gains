@@ -2,15 +2,20 @@ import '~/global.css';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { type Theme, ThemeProvider, DefaultTheme, DarkTheme } from '@react-navigation/native';
-import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { Slot, SplashScreen } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
 import * as React from 'react';
 import { Platform } from 'react-native';
+import { KeyboardProvider } from 'react-native-keyboard-controller';
 
 import { NAV_THEME } from '~/constants/colors';
 import { SupabaseProvider, useSupabaseInit } from '~/context/supabase-provider';
 import { useColorScheme } from '~/lib/useColorScheme';
+import { queryClient } from '~/repository/query-client';
+
+if (__DEV__) {
+  require('~/reactotron.config');
+}
 
 const LIGHT_THEME: Theme = {
   dark: false,
@@ -35,7 +40,6 @@ export default function RootLayout() {
   const { colorScheme, setColorScheme, isDarkColorScheme } = useColorScheme();
   const [isColorSchemeLoaded, setIsColorSchemeLoaded] = React.useState(false);
 
-  const queryClient = new QueryClient();
   const sup = useSupabaseInit();
 
   console.log('colorScheme', colorScheme);
@@ -60,18 +64,26 @@ export default function RootLayout() {
     });
   }, []);
 
+  const isAppReady = sup.initialized && isColorSchemeLoaded;
+
   React.useEffect(() => {
-    if (sup.initialized && isColorSchemeLoaded) {
+    if (isAppReady) {
       SplashScreen.hideAsync();
     }
-  }, [sup.initialized, isColorSchemeLoaded]);
+  }, [isAppReady]);
+
+  if (!isAppReady) {
+    return null;
+  }
 
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
-        <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
+        {/* <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} /> */}
         <SupabaseProvider {...sup}>
-          <Slot />
+          <KeyboardProvider>
+            <Slot />
+          </KeyboardProvider>
         </SupabaseProvider>
       </ThemeProvider>
     </QueryClientProvider>

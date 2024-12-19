@@ -1,10 +1,11 @@
+import { FlashList } from '@shopify/flash-list';
 import { useInsertMutation } from '@supabase-cache-helpers/postgrest-react-query';
 import { useCallback, useState, useEffect } from 'react';
 import { useFieldArray, useForm, FormProvider, useFormContext } from 'react-hook-form';
-import { View } from 'react-native';
+import { FlatList, Platform, ScrollView, View } from 'react-native';
 
 import { ExerciseTracker } from './exercise-tracker';
-import { resolver, type FormData } from './schema';
+import { resolver, type FormData, type ValidatedFormData } from './schema';
 import { H1, H2, H3, Large, Lead, Muted } from '../ui/typography';
 
 import {
@@ -23,12 +24,18 @@ import { Text } from '~/components/ui/text';
 import { SET_TYPES } from '~/const';
 import { useUser } from '~/context/supabase-provider';
 import { Plus } from '~/lib/icons/Plus';
-import { type Workout } from '~/repository';
-import { WeightUnit } from '~/types';
+import { InsertTrackingsData, type Workout } from '~/repository';
+import { RoutineExercise } from '~/types';
 
-export default function TrackingForm({ workout, onSubmit }: { workout: Workout }) {
-  const [plannedExercises, setPlannedExercises] = useState<Workout['routine_exercises']>(
-    workout.routine_exercises
+export default function TrackingForm({
+  workout,
+  onSubmit,
+}: {
+  workout: Workout;
+  onSubmit: (data: InsertTrackingsData) => void;
+}) {
+  const [plannedExercises, setPlannedExercises] = useState<RoutineExercise[]>(
+    workout.routine_exercises as unknown as RoutineExercise[]
   );
   const [values, setValues] = useState<FormData>();
 
@@ -46,10 +53,10 @@ export default function TrackingForm({ workout, onSubmit }: { workout: Workout }
         weightUnit: user_metadata.weight_unit ?? 'kg',
         order: exercise.order,
         sets: exercise.sets.map((set) => ({
-          type: set.type,
-          weight: '0',
-          measurement: '0',
-          measurementType: set.type.startsWith('time') ? 'duration' : 'reps',
+          type: { value: set.type, label: set.type },
+          weight: '',
+          measurement: '',
+          measurementType: set.target.type.startsWith('time') ? 'duration' : 'reps',
           completed: false,
         })),
       })),
@@ -84,12 +91,11 @@ export default function TrackingForm({ workout, onSubmit }: { workout: Workout }
     handleSubmit,
     formState: { errors },
     control,
-    register,
   } = methods;
 
   const {
     fields: exerciseTrackings,
-    append,
+    // append,
     // prepend,
     // remove,
     // swap,
@@ -100,7 +106,9 @@ export default function TrackingForm({ workout, onSubmit }: { workout: Workout }
     name: 'exercises',
   });
 
-  const _onSubmit = async (data) => {
+  console.log('exercises', exerciseTrackings);
+
+  const _onSubmit = async (data: ValidatedFormData) => {
     // if (!response.issues) localStorage.removeItem(key);
 
     console.log('data', data);
@@ -112,7 +120,7 @@ export default function TrackingForm({ workout, onSubmit }: { workout: Workout }
       p_exercise_trackings: data.exercises.map((exercise) => ({
         exercise_id: exercise.exerciseId,
         sets: exercise.sets.map((set, index) => ({
-          type: set.type,
+          type: set.type.value,
           weight: set.weight,
           measurement: set.measurement,
           measurement_type: set.measurementType,
@@ -127,103 +135,78 @@ export default function TrackingForm({ workout, onSubmit }: { workout: Workout }
 
   const [addedExercises, setAddedExercises] = useState<ExerciseSelectModel[]>([]);
 
-  const addNewExercises = useCallback(() => {
-    append(
-      addedExercises.map((exercise) => ({
-        exerciseId: exercise.id,
-        sets: [
-          {
-            type: SET_TYPES.normal,
-            weight: '0',
-            measurement: '0',
-            measurementType: 'reps',
-            completed: false,
-          },
-        ],
-      }))
-    );
+  // const addNewExercises = useCallback(() => {
+  //   append(
+  //     addedExercises.map((exercise) => ({
+  //       exerciseId: exercise.id,
+  //       sets: [
+  //         {
+  //           type: SET_TYPES.normal,
+  //           weight: '0',
+  //           measurement: '0',
+  //           measurementType: 'reps',
+  //           completed: false,
+  //         },
+  //       ],
+  //     }))
+  //   );
 
-    const newExercises = addedExercises.map<Partial<Exercise>>((exercise) => ({
-      exerciseId: exercise.id,
-      data: exercise,
-      sets: [],
-    }));
-    setPlannedExercises([...plannedExercises, ...newExercises]);
-    setAddedExercises([]);
-  }, [addedExercises, plannedExercises, append]);
+  //   const newExercises = addedExercises.map<Partial<Exercise>>((exercise) => ({
+  //     exerciseId: exercise.id,
+  //     data: exercise,
+  //     sets: [],
+  //   }));
+  //   setPlannedExercises([...plannedExercises, ...newExercises]);
+  //   setAddedExercises([]);
+  // }, [addedExercises, plannedExercises, append]);
 
   console.log('errors', errors);
   return (
-    <View className="flex-1">
-      <FormProvider {...methods}>
-        <View className="flex flex-1 flex-col p-4">
-          <View className="flex flex-1 flex-col">
-            <H2>{workout.week.routine.name}</H2>
-            <Muted>
-              Week {workout.week.week_number} of {workout.week.routine.name} - Day {workout.order}
-            </Muted>
-          </View>
+    <FormProvider {...methods}>
+      <View className="flex flex-1 flex-col p-4">
+        <View className="flex flex-col">
+          <H2>{workout.week.routine.name}</H2>
+          <Muted>
+            Week {workout.week.week_number} of {workout.week.routine.name} - Day {workout.order}
+          </Muted>
+        </View>
 
-          <View className="flex flex-1 flex-col gap-8">
-            {/* {exerciseTrackings.map((field, exerciseIndex) => {
+        {/* <ScrollView className="flex flex-col pt-6" contentContainerClassName="pb-24 gap-8">
+          {exerciseTrackings.map((field, exerciseIndex) => {
             const exercise = plannedExercises[exerciseIndex];
 
             return (
-              <ExerciseTracker
-                exercise={exercise}
-                exerciseIndex={exerciseIndex}
-                weightUnit={weightUnit}
-                key={field.id}
-              />
+              <ExerciseTracker exercise={exercise} exerciseIndex={exerciseIndex} key={field.id} />
             );
-          })} */}
-          </View>
-          {/* <Drawer>
-          <DrawerTrigger asChild>
-            <Button>
-              <Plus />
-              Add Exercise
-            </Button>
-          </DrawerTrigger>
-          <DrawerContent>
-            <DrawerHeader>
-              <DrawerTitle>Exercises</DrawerTitle>
-            </DrawerHeader>
-            <ExercisePicker
-              value={addedExercises}
-              onChange={setAddedExercises}
-            />
-
-            <DrawerFooter>
-              <DrawerClose asChild>
-                <Button
-                  disabled={!addedExercises.length}
-                  onClick={addNewExercises}
-                >
-                  Add Exercises
-                </Button>
-              </DrawerClose>
-              <DrawerClose asChild>
-                <Button variant="outline">Cancel</Button>
-              </DrawerClose>
-            </DrawerFooter>
-          </DrawerContent>
-        </Drawer> */}
-        </View>
-
-        <Toolbar onSubmit={handleSubmit(_onSubmit)} />
-      </FormProvider>
-    </View>
+          })}
+        </ScrollView> */}
+        <FlashList
+          data={exerciseTrackings}
+          className="flex flex-col pt-6"
+          contentContainerClassName="pb-24 gap-8"
+          ItemSeparatorComponent={() => <View className="h-6" />}
+          renderItem={({ item: field, index: exerciseIndex }) => {
+            const exercise = plannedExercises[exerciseIndex];
+            return (
+              <ExerciseTracker exercise={exercise} exerciseIndex={exerciseIndex} key={field.id} />
+            );
+          }}
+          estimatedItemSize={200}
+        />
+      </View>
+      {/* @ts-expect-error - TODO: fix type */}
+      <Toolbar onSubmit={handleSubmit(_onSubmit)} />
+    </FormProvider>
   );
 }
 
 function Toolbar({ onSubmit }: { onSubmit: () => void }) {
   return (
-    <View className="flex-1 border-t border-zinc-200">
-      <View className="flex w-full flex-1 gap-4 px-4 py-4">
+    <View className="absolute bottom-0 left-0 right-0 border-t border-border bg-background">
+      <View className="flex w-full flex-row gap-4 p-4">
         <SubmitButton onSubmit={onSubmit} />
         <View className="flex-1">
-          <Button variant="outline" onPress={() => null}>
+          <Button onPress={() => null}>
             <Text>Rest Timer</Text>
           </Button>
         </View>
@@ -283,3 +266,39 @@ function SubmitButton({ onSubmit }: { onSubmit: () => void }) {
     </View>
   );
 }
+
+// const AddExercisesDrawer = ({
+//   addedExercises,
+//   setAddedExercises,
+//   addNewExercises,
+// }: {
+//   addedExercises: ExerciseSelectModel[];
+//   setAddedExercises: (value: ExerciseSelectModel[]) => void;
+//   addNewExercises: () => void;
+// }) => (
+//   <Drawer>
+//     <DrawerTrigger asChild>
+//       <Button>
+//         <Plus />
+//         Add Exercise
+//       </Button>
+//     </DrawerTrigger>
+//     <DrawerContent>
+//       <DrawerHeader>
+//         <DrawerTitle>Exercises</DrawerTitle>
+//       </DrawerHeader>
+//       <ExercisePicker value={addedExercises} onChange={setAddedExercises} />
+
+//       <DrawerFooter>
+//         <DrawerClose asChild>
+//           <Button disabled={!addedExercises.length} onClick={addNewExercises}>
+//             Add Exercises
+//           </Button>
+//         </DrawerClose>
+//         <DrawerClose asChild>
+//           <Button variant="outline">Cancel</Button>
+//         </DrawerClose>
+//       </DrawerFooter>
+//     </DrawerContent>
+//   </Drawer>
+// );

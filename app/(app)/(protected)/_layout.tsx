@@ -48,6 +48,20 @@ export default function RoutinesLayout() {
         }}
       />
       <Stack.Screen
+        name="tracking/[id]"
+        options={({ route }) => ({
+          headerShown: true,
+          headerTitle: route.params?.name ?? 'Tracking',
+          headerStyle: {
+            backgroundColor: colors[colorScheme].background,
+          },
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          headerTintColor: colors[colorScheme].foreground,
+        })}
+      />
+      <Stack.Screen
         name="track"
         options={{
           headerShown: true,

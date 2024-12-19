@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { ActivityIndicator, View } from 'react-native';
 import * as z from 'zod';
 
-import { SafeAreaView } from '~/components/safe-area-view';
+import { Screen } from '~/components/screen';
 import { Button } from '~/components/ui/button';
 import { Form, FormField, FormInput } from '~/components/ui/form';
 import { Text } from '~/components/ui/text';
@@ -51,7 +51,7 @@ export default function SignUp() {
   }
 
   return (
-    <Container edges={['bottom']}>
+    <Screen safeAreaEdges={['bottom']} preset="fixed" contentContainerClassName="flex-1 p-4">
       <View className="flex-1 gap-4 web:m-4">
         <H1 className="self-start">Sign Up</H1>
 
@@ -111,6 +111,6 @@ export default function SignUp() {
         className="web:m-4">
         {form.formState.isSubmitting ? <ActivityIndicator size="small" /> : <Text>Sign Up</Text>}
       </Button>
-    </Container>
+    </Screen>
   );
 }

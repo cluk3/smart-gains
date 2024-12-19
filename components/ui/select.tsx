@@ -26,7 +26,7 @@ const SelectTrigger = React.forwardRef<SelectPrimitive.TriggerRef, SelectPrimiti
         className
       )}
       {...props}>
-      <>{children}</>
+      {children}
       <ChevronDown size={16} aria-hidden className="text-foreground opacity-50" />
     </SelectPrimitive.Trigger>
   )
@@ -120,25 +120,28 @@ const SelectLabel = React.forwardRef<SelectPrimitive.LabelRef, SelectPrimitive.L
 );
 SelectLabel.displayName = SelectPrimitive.Label.displayName;
 
-const SelectItem = React.forwardRef<SelectPrimitive.ItemRef, SelectPrimitive.ItemProps>(
-  ({ className, children, ...props }, ref) => (
-    <SelectPrimitive.Item
-      ref={ref}
-      className={cn(
-        'web:group native:py-2 native:pl-10 relative flex w-full flex-row items-center rounded-sm py-1.5 pl-8 pr-2 active:bg-accent web:cursor-default web:select-none web:outline-none web:hover:bg-accent/50 web:focus:bg-accent',
-        props.disabled && 'opacity-50 web:pointer-events-none',
-        className
-      )}
-      {...props}>
-      <View className="native:left-3.5 native:pt-px absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
-        <SelectPrimitive.ItemIndicator>
-          <Check size={16} strokeWidth={3} className="text-popover-foreground" />
-        </SelectPrimitive.ItemIndicator>
-      </View>
+const SelectItem = React.forwardRef<
+  SelectPrimitive.ItemRef,
+  SelectPrimitive.ItemProps & { children: React.ReactNode }
+>(({ className, children, ...props }, ref) => (
+  <SelectPrimitive.Item
+    ref={ref}
+    className={cn(
+      'web:group native:py-2 native:pl-10 relative flex w-full flex-row items-center rounded-sm py-1.5 pl-8 pr-2 active:bg-accent web:cursor-default web:select-none web:outline-none web:hover:bg-accent/50 web:focus:bg-accent',
+      props.disabled && 'opacity-50 web:pointer-events-none',
+      className
+    )}
+    {...props}>
+    <View className="native:left-3.5 native:pt-px absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
+      <SelectPrimitive.ItemIndicator>
+        <Check size={16} strokeWidth={3} className="text-popover-foreground" />
+      </SelectPrimitive.ItemIndicator>
+    </View>
+    {children || (
       <SelectPrimitive.ItemText className="native:text-base text-sm text-popover-foreground web:group-focus:text-accent-foreground" />
-    </SelectPrimitive.Item>
-  )
-);
+    )}
+  </SelectPrimitive.Item>
+));
 SelectItem.displayName = SelectPrimitive.Item.displayName;
 
 const SelectSeparator = React.forwardRef<

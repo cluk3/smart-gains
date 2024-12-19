@@ -2,7 +2,7 @@ import { useQuery } from '@supabase-cache-helpers/postgrest-react-query';
 import { Link, useLocalSearchParams } from 'expo-router';
 import { View, SectionList } from 'react-native';
 
-import { Container } from '~/components/layout';
+import { Screen } from '~/components/screen';
 import {
   Accordion,
   AccordionContent,
@@ -10,6 +10,7 @@ import {
   AccordionTrigger,
 } from '~/components/ui/accordion';
 import { Badge } from '~/components/ui/badge';
+import { Button } from '~/components/ui/button';
 import { Text } from '~/components/ui/text';
 import { H1, H2, Muted, H4, H3 } from '~/components/ui/typography';
 import { getRoutineById, type Routine as RoutineType } from '~/repository';
@@ -20,10 +21,9 @@ export default function RoutineScreen() {
   const { data, isSuccess } = useQuery(getRoutineById(id));
 
   return (
-    // TODO: check if pt-10 used for the header can be optimized
-    <Container className="gap-y-4 pt-10">
+    <Screen preset="fixed" contentContainerClassName="flex-1 p-4">
       {isSuccess && data ? <Routine routine={data} /> : <H2>Loading...</H2>}
-    </Container>
+    </Screen>
   );
 }
 

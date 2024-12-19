@@ -1,3 +1,5 @@
+import { Assign } from 'utility-types';
+
 import {
   WEIGHT_UNITS,
   MEASUREMENT_TYPES,
@@ -5,6 +7,7 @@ import {
   SET_TYPES,
   DIFFICULTY_LEVELS,
 } from '~/const';
+import { Tables } from '~/supabase/types';
 
 export type SetType = keyof typeof SET_TYPES;
 export type WeightUnit = keyof typeof WEIGHT_UNITS;
@@ -88,10 +91,15 @@ export interface ExerciseSet {
   target: SetTarget;
 }
 
-export interface SetTracking {
+export interface TrackingSet {
   id: string;
   rpe?: number;
   weight: number;
   measurement: number;
   measurementType: MeasurementType;
 }
+
+export type RoutineExercise = Assign<
+  Tables<'routine_exercises'>,
+  { data: Tables<'exercises'>; sets: ExerciseSet[] }
+>;

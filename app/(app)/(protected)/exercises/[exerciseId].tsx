@@ -2,7 +2,7 @@ import { useQuery } from '@supabase-cache-helpers/postgrest-react-query';
 import { useLocalSearchParams } from 'expo-router';
 import { View, SectionList, ScrollView } from 'react-native';
 
-import { Container } from '~/components/layout';
+import { Screen } from '~/components/screen';
 import {
   Accordion,
   AccordionContent,
@@ -13,7 +13,7 @@ import { Badge } from '~/components/ui/badge';
 import { Text } from '~/components/ui/text';
 import { P, H1, H2, Muted } from '~/components/ui/typography';
 import { getExerciseById, type Exercise as ExerciseType } from '~/repository';
-import { SetTracking } from '~/types';
+import { TrackingSet } from '~/types';
 
 export default function ExerciseScreen() {
   const { exerciseId } = useLocalSearchParams<{ exerciseId: string }>();
@@ -23,9 +23,9 @@ export default function ExerciseScreen() {
   }
 
   return (
-    <Container className="pt-10">
+    <Screen preset="auto" contentContainerClassName="flex-1 p-4">
       {isSuccess && data ? <Exercise exercise={data} /> : <H2>Loading...</H2>}
-    </Container>
+    </Screen>
   );
 }
 
@@ -79,7 +79,7 @@ function History({ exercise }: { exercise: ExerciseType }) {
   // TODO: group by workout and sort by order and workout date
   const sections = exercise.workout_exercise_trackings.map(({ id, sets, weight_unit }) => ({
     key: id,
-    data: sets as unknown as SetTracking[],
+    data: sets as unknown as TrackingSet[],
     weightUnit: weight_unit,
   }));
   return (

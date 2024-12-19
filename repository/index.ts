@@ -1,6 +1,8 @@
 import { type QueryData } from '@supabase/supabase-js';
 
 import { supabase } from '~/supabase';
+import { Database } from '~/supabase/types';
+import { MeasurementType, SetType, WeightUnit } from '~/types';
 
 export function getRoutineById(id: string) {
   return supabase
@@ -70,6 +72,34 @@ export function getWorkoutById(id: string) {
     .eq('id', id)
     .order('order', { referencedTable: 'routine_exercises', ascending: true })
     .single();
+}
+
+export type InsertTrackingsData =
+  Database['public']['Functions']['upsert_workout_tracking']['Args'] & {
+    p_exercise_trackings: {
+      sets: {
+        type: SetType;
+        weight: number | string;
+        measurement: number;
+        measurement_type: MeasurementType;
+        completed: boolean;
+      }[];
+      order: number;
+      notes?: string;
+      weight_unit: WeightUnit;
+    }[];
+  };
+
+export async function insertTrackings(data: InsertTrackingsData) {
+  const { data: inserted, error } = await supabase.rpc('upsert_workout_tracking', data);
+  console.log('inserted', inserted && inserted[0]);
+
+  if (error) {
+    console.log('insert error', error);
+    throw error;
+  }
+
+  return inserted[0];
 }
 
 export type Programs = QueryData<ReturnType<typeof getPrograms>>;

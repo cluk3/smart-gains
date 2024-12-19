@@ -3,70 +3,70 @@ import { View } from 'react-native';
 
 import { type FormData } from './schema';
 import { SetTracker } from './set-tracker';
+import { Text } from '../ui/text';
+import { H4, Muted } from '../ui/typography';
 
 import { Button } from '~/components/ui/button';
 import { MEASUREMENT_TYPES, SET_TYPES } from '~/const';
+import { ListChecks } from '~/lib/icons/ListChecks';
 import { ListPlus } from '~/lib/icons/ListPlus';
 import { cn } from '~/lib/utils';
-import { type Workout } from '~/repository';
-import { WeightUnit } from '~/types';
+import { RoutineExercise } from '~/types';
 
 export function ExerciseTracker({
   exercise,
   exerciseIndex,
-  weightUnit,
 }: {
-  exercise: Workout['routine_exercises'][0];
+  exercise: RoutineExercise;
   exerciseIndex: number;
-  weightUnit: WeightUnit;
 }) {
   const {
     fields: setsTracking,
-    append,
+    append: appendSet,
     // prepend,
     remove,
     // swap,
     // move,
     // insert,
-  } = useFieldArray({
+  } = useFieldArray<FormData>({
     name: `exercises.${exerciseIndex}.sets`,
   });
 
-  const { register, setValue, watch } = useFormContext<FormData>();
+  const { setValue, watch } = useFormContext<FormData>();
 
   const sets = watch(`exercises.${exerciseIndex}.sets`);
+  const weightUnit = watch(`exercises.${exerciseIndex}.weightUnit`);
 
   return (
     <View className="flex flex-col" key={exercise.id}>
-      <H3 className="from-primary-500 to-primary-500/0 hover:to-primary-500/10 from-[-100%] to-60% pb-1 text-xl font-medium text-zinc-950 [background-image:linear-gradient(35deg,var(--tw-gradient-stops))]">
-        {exercise.data.name}
-      </H3>
-      {exercise.notes && <p>{exercise.notes}</p>}
-      <input type="hidden" {...register(`exercises.${exerciseIndex}.exerciseId`)} />
-      <View className="grid grid-cols-[auto_auto_auto_4rem_4rem_4rem_2rem]">
-        <View className="col-span-7 grid grid-cols-subgrid items-center justify-items-center gap-2 border-b border-zinc-200 p-2 pb-0">
-          <View className="flex items-center gap-2 justify-self-start">
-            <Button
-              variant="ghost"
-              onClick={() => {
-                const isCompleted = sets.every((set) => set.completed);
-                sets.forEach((_, index) => {
-                  setValue(`exercises.${exerciseIndex}.sets.${index}.completed`, !isCompleted);
-                });
-              }}>
-              <ListChecks
-                className={cn(sets.every((set) => set.completed) && 'text-emerald-500')}
-              />
-            </Button>
-            <span className="font-bold text-gray-400">Set</span>
-          </View>
-
-          <span className="font-bold text-gray-400">Intensity</span>
-          <span className="font-bold text-gray-400">Target</span>
-          <span className="font-bold text-gray-400">{weightUnit}</span>
-          <span className="font-bold text-gray-400">Reps</span>
-          <span className="font-bold text-gray-400">RPE</span>
+      <H4 className="pb-1">{exercise.data?.name}</H4>
+      {exercise.notes && <Muted>{exercise.notes}</Muted>}
+      <View className="flex-1 pt-2">
+        <View className="flex flex-1 flex-row items-center border-b border-border">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="flex-[0_0_36px]"
+            onPress={() => {
+              const isCompleted = sets.every((set) => set.completed);
+              sets.forEach((_, index) => {
+                setValue(`exercises.${exerciseIndex}.sets.${index}.completed`, !isCompleted);
+              });
+            }}>
+            <Text asChild className={cn(sets.every((set) => set.completed) && 'text-emerald-500')}>
+              <ListChecks size={18} />
+            </Text>
+          </Button>
+          <Text className="flex-[0_0_40px] text-center font-bold text-gray-400">Set</Text>
+          <Text className="flex-[0_0_80px] text-center font-bold uppercase text-gray-400">
+            {exercise.sets[0]?.intensity.type}
+          </Text>
+          <Text className="flex-[0_0_60px] text-center font-bold text-gray-400">Target</Text>
+          <Text className="flex-1 text-center font-bold text-gray-400">{weightUnit}</Text>
+          <Text className="flex-1 text-center font-bold text-gray-400">Reps</Text>
+          <Text className="flex-1 text-center font-bold text-gray-400">RPE</Text>
         </View>
+
         {setsTracking.map((setField, setIndex) => {
           const set = exercise.sets[setIndex];
 
@@ -81,23 +81,26 @@ export function ExerciseTracker({
           );
         })}
       </View>
-      <View className="self-start px-4 py-2">
+      <View className="py-2">
         <Button
-          className="size-8 flex-grow-0 rounded-full p-2"
+          className="rounded-full"
           variant="outline"
-          onClick={() => {
-            append({
+          size="icon"
+          onPress={() => {
+            appendSet({
               weight: '0',
               measurement: '0',
               measurementType:
-                exercise.sets[0] && exercise.sets[0].type.startsWith('time')
+                exercise.sets[0] && exercise.sets[0].target.type.startsWith('time')
                   ? MEASUREMENT_TYPES.duration
                   : MEASUREMENT_TYPES.reps,
               completed: false,
-              type: SET_TYPES.normal,
+              type: { value: SET_TYPES.normal, label: SET_TYPES.normal },
             });
           }}>
-          <ListPlus className="size-6 translate-x-[2px]" />
+          <Text asChild className="translate-x-[1px]">
+            <ListPlus size={16} />
+          </Text>
         </Button>
       </View>
     </View>
